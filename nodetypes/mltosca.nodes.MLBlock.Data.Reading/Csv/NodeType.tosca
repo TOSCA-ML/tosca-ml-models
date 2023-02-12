@@ -10,6 +10,12 @@ node_types:
     properties:
       filepath:
         type: string
+    requirements:
+      - host:
+          capability: mltosca.capabilities.Compute
+          node: mltosca.nodes.Data
+          relationship: tosca.relationships.HostedOn
+          occurrences: [ 1, 1 ]
     interfaces:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
@@ -21,11 +27,8 @@ node_types:
               timeout: 0
     artifacts:
       create:
-        type: tosca.artifacts.Implementation.Python
-        file: create.py
-    requirements:
-      - host:
-          capability: mltosca.capabilities.Compute
-          node: mltosca.nodes.Data
-          relationship: tosca.relationships.HostedOn
-          occurrences: [ 1, 1 ]
+        type: radon.artifacts.Ansible
+        file: RunPython.yml
+      ReadCSV:
+        type: tosca.artifacts.File
+        file: ReadCSV.py

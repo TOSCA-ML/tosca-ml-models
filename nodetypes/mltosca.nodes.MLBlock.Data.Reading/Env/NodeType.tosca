@@ -22,5 +22,5 @@ node_types:
               timeout: 0
     artifacts:
       create:
-        type: tosca.artifacts.Implementation.Bash
-        file: CreateEnv.sh
+        type: radon.artifacts.Ansible
+        file: CreateEnv.yml
