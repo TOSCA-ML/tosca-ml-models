@@ -9,8 +9,8 @@
 
 #    - name: Run Python script
 #      shell: "python ReadCSV.py {{filepath}}"
-
-    - name: set outputs
-      set_stats:
-        data:
-          function_id: "abcde"
+#
+#    - name: set outputs
+#      set_stats:
+#        data:
+#          function_id: "abcde"

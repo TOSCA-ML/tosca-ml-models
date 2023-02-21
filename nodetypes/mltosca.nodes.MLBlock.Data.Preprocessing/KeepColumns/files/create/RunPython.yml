@@ -11,7 +11,7 @@
 #      shell: python KeepColumns.py /home/artjom/Downloads/df.pkl Name,Age
 
 
-    - name: Creating an empty file
-      file:
-        path: "/home/artjom/Downloads/{{function_id}}.txt"
-        state: touch
+#    - name: Creating an empty file
+#      file:
+#        path: "/home/artjom/Downloads/{{function_id}}.txt"
+#        state: touch

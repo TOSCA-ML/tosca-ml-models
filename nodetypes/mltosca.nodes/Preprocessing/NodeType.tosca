@@ -7,3 +7,9 @@ node_types:
       targetNamespace: "mltosca.nodes"
       abstract: "false"
       final: "false"
+    requirements:
+      - host:
+          capability: mltosca.capabilities.Compute
+          node: mltosca.nodes.Data
+          relationship: tosca.relationships.HostedOn
+          occurrences: [ 1, 1 ]
