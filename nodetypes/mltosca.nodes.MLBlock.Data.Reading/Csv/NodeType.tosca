@@ -7,6 +7,10 @@ node_types:
       targetNamespace: "mltosca.nodes.MLBlock.Data.Reading"
       abstract: "false"
       final: "false"
+    attributes:
+      function_id:
+        type: string
+        default: "read_csv"
     properties:
       filepath:
         type: string
@@ -22,6 +26,11 @@ node_types:
         operations:
           create:
             description: The standard create operation
+            inputs:
+              filepath:
+                type: string
+                required: true
+                default: { get_property: [ SELF, filepath ] }
             implementation:
               primary: create
               timeout: 0

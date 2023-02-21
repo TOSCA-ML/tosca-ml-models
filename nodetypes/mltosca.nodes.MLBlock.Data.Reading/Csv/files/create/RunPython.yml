@@ -7,10 +7,10 @@
     - name: Activate Conda environment
       shell: ". ~/anaconda3/bin/activate mltosca"
 
-    - name: Run Python script
-      shell: python ReadCSV.py /home/artjom/thesis/TOSCA-ML/project1/data/data.csv
+#    - name: Run Python script
+#      shell: "python ReadCSV.py {{filepath}}"
 
-    - name: Creating an empty file
-      file:
-        path: "/home/artjom/Downloads/abc.txt"
-        state: touch
+    - name: set outputs
+      set_stats:
+        data:
+          function_id: "abcde"

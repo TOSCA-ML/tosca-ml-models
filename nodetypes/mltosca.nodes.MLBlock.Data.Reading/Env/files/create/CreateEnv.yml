@@ -6,16 +6,16 @@
     conda_env_name: "mltosca"
     packages: ["scikit-learn", "pandas"]
   tasks:
-  - name: Create Conda Environment
-    command: "conda create --yes --name {{ conda_env_name }} python=3"
-    args:
-      executable: /bin/bash
-      warn: false
-    register: result
+#  - name: Create Conda Environment
+#    command: "conda create --yes --name {{ conda_env_name }} python=3"
+#    args:
+#      executable: /bin/bash
+#      warn: false
+#    register: result
 
   - name: Activate Conda Environment
     shell: ". ~/anaconda3/bin/activate {{ conda_env_name }}"
 
-  - name: Install Packages
-    shell: "conda install --yes {{ item }}"
-    with_items: "{{ packages }}"
+#  - name: Install Packages
+#    shell: "conda install --yes {{ item }}"
+#    with_items: "{{ packages }}"
