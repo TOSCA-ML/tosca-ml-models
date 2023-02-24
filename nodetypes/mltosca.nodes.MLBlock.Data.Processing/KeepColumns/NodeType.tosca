@@ -1,0 +1,43 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.MLBlock.Data.Processing.KeepColumns:
+    derived_from: mltosca.nodes.Processing
+    metadata:
+      targetNamespace: "mltosca.nodes.MLBlock.Data.Processing"
+      abstract: "false"
+      final: "false"
+    attributes:
+      function_id:
+        type: string
+        default: "keep_columns"
+    requirements:
+      - host:
+          capability: mltosca.capabilities.Pipeline
+          relationship: mltosca.relationships.HostedOnPipe
+          occurrences: [ 1, 1 ]
+      - connection:
+          capability: mltosca.capabilities.Processing
+          relationship: mltosca.relationships.ConnectsToProcessing
+          occurrences: [ 0, UNBOUNDED ]
+    capabilities:
+      connection:
+        occurrences: [ 1, UNBOUNDED ]
+        type: mltosca.capabilities.Processing
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          create:
+            description: The standard create operation
+            inputs:
+              function_id:
+                type: string
+                default: { get_attribute: [ SELF, function_id ] }
+            implementation:
+              primary: configure
+              timeout: 0
+    artifacts:
+      configure:
+        type: radon.artifacts.Ansible
+        file: RunPython.yml

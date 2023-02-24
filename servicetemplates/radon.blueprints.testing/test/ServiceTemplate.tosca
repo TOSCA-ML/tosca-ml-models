@@ -1,0 +1,83 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+metadata:
+  targetNamespace: "radon.blueprints.testing"
+topology_template:
+  node_templates:
+    KeepColumns_0:
+      type: mltosca.nodes.MLBlock.Data.Processing.KeepColumns
+      metadata:
+        x: "1346"
+        y: "155"
+        displayName: "KeepColumns"
+      requirements:
+        - host:
+            node: Pipeline_0
+            relationship: con_HostedOnPipe_1
+            capability: host
+    Pipeline_0:
+      type: mltosca.nodes.MLBlock.Data.Processing.Pipeline
+      metadata:
+        x: "1151"
+        y: "569"
+        displayName: "Pipeline"
+      requirements:
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_1
+            capability: host
+    Conda_0:
+      type: mltosca.nodes.Environment.Conda
+      metadata:
+        x: "653"
+        y: "751"
+        displayName: "Conda"
+    ReadCSV_0:
+      type: mltosca.nodes.MLBlock.Data.Reading.ReadCSV
+      metadata:
+        x: "255"
+        y: "320"
+        displayName: "ReadCSV"
+      properties:
+        filepath: "/home/artjom/thesis/TOSCA-ML/project1/data/data.csv"
+        delimiter: ","
+        encoding: "UTF-8"
+      requirements:
+        - connection:
+            node: RemoveColumns_0
+            relationship: con_ConnectsToProcessing_1
+            capability: connection
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_0
+            capability: host
+    RemoveColumns_0:
+      type: mltosca.nodes.MLBlock.Data.Processing.RemoveColumns
+      metadata:
+        x: "715"
+        y: "144"
+        displayName: "RemoveColumns"
+      properties:
+        columns: "PassengerId, Name, Cabin, Ticket"
+      requirements:
+        - connection:
+            node: KeepColumns_0
+            relationship: con_ConnectsToProcessing_0
+            capability: connection
+        - host:
+            node: Pipeline_0
+            relationship: con_HostedOnPipe_0
+            capability: host
+  relationship_templates:
+    con_ConnectsToProcessing_1:
+      type: mltosca.relationships.ConnectsToProcessing
+    con_HostedOn_0:
+      type: mltosca.relationships.HostedOnEnv
+    con_ConnectsToProcessing_0:
+      type: mltosca.relationships.ConnectsToProcessing
+    con_HostedOn_1:
+      type: mltosca.relationships.HostedOnEnv
+    con_HostedOnPipe_1:
+      type: mltosca.relationships.HostedOnPipe
+    con_HostedOnPipe_0:
+      type: mltosca.relationships.HostedOnPipe

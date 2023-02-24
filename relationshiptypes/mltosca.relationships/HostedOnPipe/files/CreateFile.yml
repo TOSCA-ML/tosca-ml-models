@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Check if file exists
+      stat:
+        path: /home/artjom/Downloads/Pipeline.txt
+      register: file_info
+
+    - name: Append input to file
+      copy:
+        dest: /home/artjom/Downloads/Pipeline.txt
+        content: |
+          {% if file_info.stat.exists %}
+          {{ lookup('file', '/home/artjom/Downloads/Pipeline.txt') }}
+          {% endif %}
+          {{function_id}}

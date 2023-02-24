@@ -1,0 +1,31 @@
+#---
+#- hosts: localhost
+#  gather_facts: no
+#
+#  tasks:
+#    - name: source run
+#      shell: source ~/anaconda3/etc/profile.d/conda.sh executable=/bin/bash
+#
+#    - name: Activate Conda environment
+#      shell: ". ~/anaconda3/bin/activate mltosca"
+#
+#    - name: Run Python script
+#      shell: python KeepColumns.py Name,Age /home/artjom/Downloads/df.pkl
+
+---
+- hosts: localhost
+
+  tasks:
+    - name: Check if file exists
+      stat:
+        path: /home/artjom/Downloads/order.txt
+      register: file_info
+
+    - name: Append input to file
+      copy:
+        dest: /home/artjom/Downloads/order.txt
+        content: |
+          {{function_id}} | another | params
+          {% if file_info.stat.exists %}
+          {{ lookup('file', '/home/artjom/Downloads/order.txt') }}
+          {% endif %}

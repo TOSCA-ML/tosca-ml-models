@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Start python
+      shell: "python wait.py &"

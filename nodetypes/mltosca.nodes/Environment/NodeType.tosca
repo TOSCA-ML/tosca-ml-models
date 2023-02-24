@@ -2,7 +2,7 @@ tosca_definitions_version: tosca_simple_yaml_1_3
 
 node_types:
   mltosca.nodes.Environment:
-    derived_from: mltosca.nodes.MLBlock
+    derived_from: tosca.nodes.Root
     metadata:
       targetNamespace: "mltosca.nodes"
       abstract: "false"

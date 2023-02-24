@@ -1,0 +1,46 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.Environment.Conda:
+    derived_from: mltosca.nodes.Environment
+    metadata:
+      targetNamespace: "mltosca.nodes.Environment"
+      abstract: "false"
+      final: "false"
+    capabilities:
+      host:
+        occurrences: [ 1, UNBOUNDED ]
+        type: mltosca.capabilities.Environment
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          stop:
+            description: The standard stop operation
+            implementation:
+              primary: configure
+              timeout: 0
+          start:
+            description: The standard start operation
+            implementation:
+              primary: configure
+              timeout: 0
+          create:
+            description: The standard create operation
+            implementation:
+              primary: configure
+              timeout: 0
+          configure:
+            description: The standard configure operation
+            implementation:
+              primary: configure
+              timeout: 0
+          delete:
+            description: The standard delete operation
+            implementation:
+              primary: configure
+              timeout: 0
+    artifacts:
+      configure:
+        type: radon.artifacts.Ansible
+        file: CreateEnv.yml

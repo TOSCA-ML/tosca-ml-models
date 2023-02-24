@@ -1,0 +1,58 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.MLBlock.Data.Reading.ReadCSV:
+    derived_from: mltosca.nodes.Reading
+    metadata:
+      targetNamespace: "mltosca.nodes.MLBlock.Data.Reading"
+      abstract: "false"
+      final: "false"
+    properties:
+      filepath:
+        type: string
+        description: The path of the CSV file to read
+      delimiter:
+        type: string
+        description: The character used to separate the values in the CSV file
+        required: false
+        default: ","
+      encoding:
+        type: string
+        description: The character encoding used in the CSV file
+        required: false
+        default: "UTF-8"
+    requirements:
+      - host:
+          capability: mltosca.capabilities.Environment
+          relationship: mltosca.relationships.HostedOnEnv
+          occurrences: [ 1, 1 ]
+      - connection:
+          capability: mltosca.capabilities.Processing
+          relationship: mltosca.relationships.ConnectsToProcessing
+          occurrences: [ 0, UNBOUNDED ]
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          create:
+            description: The standard create operation
+            inputs:
+              filepath:
+                type: string
+                default: { get_property: [ SELF, filepath ] }
+              delimiter:
+                type: string
+                default: { get_property: [ SELF, delimiter ] }
+              encoding:
+                type: string
+                default: { get_property: [ SELF, encoding ] }
+            implementation:
+              primary: create
+              timeout: 0
+    artifacts:
+      create:
+        type: radon.artifacts.Ansible
+        file: create.yml
+      python_script:
+        type: tosca.artifacts.File
+        file: ReadCSV.py

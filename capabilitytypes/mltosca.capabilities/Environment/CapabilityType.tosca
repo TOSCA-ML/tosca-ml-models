@@ -1,0 +1,9 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+capability_types:
+  mltosca.capabilities.Environment:
+    derived_from: tosca.capabilities.Compute
+    metadata:
+      targetNamespace: "mltosca.capabilities"
+      abstract: "false"
+      final: "false"
