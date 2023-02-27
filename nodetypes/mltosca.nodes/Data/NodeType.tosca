@@ -1,0 +1,9 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.Data:
+    derived_from: mltosca.nodes.MLBlock
+    metadata:
+      targetNamespace: "mltosca.nodes"
+      abstract: "false"
+      final: "false"

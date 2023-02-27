@@ -1,0 +1,39 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.Preprocessing.Pipeline:
+    derived_from: mltosca.nodes.Preprocessing
+    metadata:
+      targetNamespace: "mltosca.nodes.Preprocessing"
+      abstract: "false"
+      final: "false"
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          create:
+            description: The standard create operation
+            implementation:
+              primary: create
+              timeout: 0
+    capabilities:
+      host:
+        occurrences: [ 1, UNBOUNDED ]
+        valid_source_types: [ mltosca.nodes.Preprocessing ]
+        type: tosca.capabilities.Compute
+      connection:
+        occurrences: [ 1, UNBOUNDED ]
+        type: tosca.capabilities.Compute
+    requirements:
+      - host:
+          capability: tosca.capabilities.Compute
+          node: mltosca.nodes.Environment
+          relationship: tosca.relationships.HostedOn
+          occurrences: [ 1, 1 ]
+    artifacts:
+      create:
+        type: radon.artifacts.Ansible
+        file: create.yml
+      script:
+        type: tosca.artifacts.File
+        file: create_pipeline.py

@@ -1,0 +1,26 @@
+---
+- name: Create Conda Environment and Install Packages
+  hosts: localhost
+  gather_facts: no
+  vars:
+    conda_env_name: "mltosca"
+    packages:
+      - scikit-learn
+      - pandas
+
+  tasks:
+
+    - name: Check if Conda environment exists
+      shell: "conda env list | grep mltosca"
+      register: env_exists
+      ignore_errors: true
+
+    - name: Create Conda Environment
+      command: conda create --yes --name {{ conda_env_name }} python=3
+      when: env_exists.rc != 0
+
+    - name: Install Packages
+      command: conda install --yes {{ item }} --name {{ conda_env_name }}
+      with_items: "{{ packages }}"
+
+      when: env_exists.rc != 0

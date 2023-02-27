@@ -1,0 +1,8 @@
+---
+- name: Activate Conda environment and run Python script
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Activate Conda environment
+      shell: ". ~/anaconda3/bin/activate mltosca && python ReadCSV.py {{filepath}} {{delimiter}} {{encoding}}"

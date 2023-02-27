@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Creates directory
+      file:
+        path: /home/artjom/mltosca
+        state: directory
+
+    - name: Start python
+      shell: ". ~/anaconda3/bin/activate mltosca && python create_pipeline.py &"
