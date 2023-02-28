@@ -7,3 +7,45 @@ node_types:
       targetNamespace: "mltosca.nodes"
       abstract: "false"
       final: "false"
+    attributes:
+      parameters:
+        type: string
+        default: "none"
+      project_location:
+        type: string
+        default: { get_attribute: [ SELF, host, project_location ] }
+    requirements:
+      - host:
+          capability: mltosca.capabilities.Pipeline
+          node: mltosca.nodes.Preprocessing
+          relationship: mltosca.relationships.HostedOnPipeline
+          occurrences: [ 1, 1 ]
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          configure:
+            description: The standard create operation
+            inputs:
+              function_id:
+                type: string
+                required: false
+                default: { get_attribute: [ SELF, function_id ] }
+              parameters:
+                type: string
+                required: false
+                default: { get_attribute: [ SELF, parameters ] }
+              project_location:
+                type: string
+                required: false
+                default: { get_attribute: [ SELF, project_location ] }
+            implementation:
+              primary: configure
+              timeout: 0
+    artifacts:
+      configure:
+        type: radon.artifacts.Ansible
+        file: configure.yml
+      script:
+        type: tosca.artifacts.File
+        file: create_pipeline.py

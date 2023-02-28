@@ -7,6 +7,14 @@ node_types:
       targetNamespace: "mltosca.nodes.Environment"
       abstract: "false"
       final: "false"
+    attributes:
+      project_location:
+        type: string
+    capabilities:
+      host:
+        occurrences: [ 1, UNBOUNDED ]
+        valid_source_types: [ mltosca.nodes.MLBlock ]
+        type: tosca.capabilities.Compute
     interfaces:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
@@ -16,11 +24,6 @@ node_types:
             implementation:
               primary: create
               timeout: 0
-    capabilities:
-      host:
-        occurrences: [ 1, UNBOUNDED ]
-        valid_source_types: [ mltosca.nodes.MLBlock ]
-        type: tosca.capabilities.Compute
     artifacts:
       create:
         type: radon.artifacts.Ansible

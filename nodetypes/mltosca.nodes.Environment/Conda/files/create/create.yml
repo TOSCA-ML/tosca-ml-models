@@ -9,6 +9,19 @@
       - pandas
 
   tasks:
+    - name: Collect current  timestamp
+      shell: date +%d%m%y_%H-%M-%S
+      register: timestamp
+
+    - name: Create directories
+      file:
+        path: ~/mltosca/{{ timestamp.stdout }}
+        state: directory
+
+    - name: Set project location
+      set_stats:
+        data:
+          project_location: "~/mltosca/{{ timestamp.stdout }}"
 
     - name: Check if Conda environment exists
       shell: "conda env list | grep mltosca"

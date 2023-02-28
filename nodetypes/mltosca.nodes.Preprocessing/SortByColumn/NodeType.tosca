@@ -11,49 +11,12 @@ node_types:
       function_id:
         type: string
         default: "sort_by_column"
-    requirements:
-      - host:
-          capability: tosca.capabilities.Compute
-          node: mltosca.nodes.Preprocessing.Pipeline
-          relationship: tosca.relationships.HostedOn
-          occurrences: [ 1, 1 ]
-      - endpoint:
-          capability: tosca.capabilities.Compute
-          relationship: tosca.relationships.ConnectsTo
-          occurrences: [ 0, UNBOUNDED ]
-    capabilities:
-      connection:
-        occurrences: [ 1, UNBOUNDED ]
-        type: tosca.capabilities.Compute
+      parameters:
+        type: string
+        default: { concat: [ { get_property: [ SELF, column ] }, "-|-", { get_property: [ SELF, order ] } ] }
     properties:
       column:
         type: string
-      ascending:
-        type: boolean
-        default: true
-    interfaces:
-      Standard:
-        type: tosca.interfaces.node.lifecycle.Standard
-        operations:
-          create:
-            description: The standard create operation
-            inputs:
-              function_id:
-                type: string
-                required: true
-                default: { get_attribute: [ SELF, function_id ] }
-              column:
-                type: string
-                required: true
-                default: { get_property: [ SELF, column ] }
-              ascending:
-                type: string
-                required: true
-                default: { get_property: [ SELF, ascending ] }
-            implementation:
-              primary: create
-              timeout: 0
-    artifacts:
-      create:
-        type: radon.artifacts.Ansible
-        file: create.yml
+      order:
+        type: string
+        default: "ascending"

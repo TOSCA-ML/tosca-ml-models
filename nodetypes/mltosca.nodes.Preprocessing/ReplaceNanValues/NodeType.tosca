@@ -11,6 +11,9 @@ node_types:
       function_id:
         type: string
         default: "replace_nan_values"
+      parameters:
+        type: string
+        default: { concat: [ { get_property: [ SELF, column ] }, "-|-", { get_property: [ SELF, method ] }, "-|-", { get_property: [ SELF, value ] } ] }
     properties:
       method:
         type: string
@@ -21,47 +24,3 @@ node_types:
         type: string
         required: false
         default: "None"
-    requirements:
-      - host:
-          capability: tosca.capabilities.Compute
-          node: mltosca.nodes.Preprocessing.Pipeline
-          relationship: tosca.relationships.HostedOn
-          occurrences: [ 1, 1 ]
-      - connection:
-          capability: tosca.capabilities.Compute
-          relationship: tosca.relationships.ConnectsTo
-          occurrences: [ 0, UNBOUNDED ]
-    capabilities:
-      connection:
-        occurrences: [ 1, UNBOUNDED ]
-        type: tosca.capabilities.Compute
-    interfaces:
-      Standard:
-        type: tosca.interfaces.node.lifecycle.Standard
-        operations:
-          create:
-            description: The standard create operation
-            inputs:
-              method:
-                type: string
-                required: true
-                default: { get_property: [ SELF, method ] }
-              column:
-                type: string
-                required: true
-                default: { get_property: [ SELF, column ] }
-              function_id:
-                type: string
-                required: true
-                default: { get_attribute: [ SELF, function_id ] }
-              value:
-                type: string
-                required: true
-                default: { get_property: [ SELF, value ] }
-            implementation:
-              primary: create
-              timeout: 0
-    artifacts:
-      create:
-        type: radon.artifacts.Ansible
-        file: create.yml

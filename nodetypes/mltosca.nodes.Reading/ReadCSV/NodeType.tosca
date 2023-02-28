@@ -7,6 +7,10 @@ node_types:
       targetNamespace: "mltosca.nodes.Reading"
       abstract: "false"
       final: "false"
+    attributes:
+      function_id:
+        type: string
+        default: "read_csv"
     properties:
       filepath:
         type: string
@@ -27,14 +31,6 @@ node_types:
           node: mltosca.nodes.Environment
           relationship: tosca.relationships.HostedOn
           occurrences: [ 1, 1 ]
-      - connection:
-          capability: tosca.capabilities.Compute
-          relationship: tosca.relationships.ConnectsTo
-          occurrences: [ 0, UNBOUNDED ]
-    capabilities:
-      connection:
-        occurrences: [ 1, UNBOUNDED ]
-        type: tosca.capabilities.Compute
     interfaces:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
@@ -54,6 +50,10 @@ node_types:
                 type: string
                 required: true
                 default: { get_property: [ SELF, encoding ] }
+              project_location:
+                type: string
+                required: true
+                default: { get_attribute: [ SELF, host, project_location ] }
             implementation:
               primary: create
               timeout: 0
