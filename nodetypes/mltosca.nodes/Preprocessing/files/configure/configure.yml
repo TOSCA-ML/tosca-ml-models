@@ -1,0 +1,50 @@
+---
+- name: Test
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Create folder
+      file:
+        path: "{{ project_location }}/{{output_folder}}"
+        state: directory
+
+    - name: Execute background job
+      shell: ". ~/anaconda3/bin/activate mltosca && python create_pipeline.py {{project_location}}/{{output_folder}} {{project_location}}/{{previous_output_folder}} &"
+      when: function_id == "pipeline"
+
+    - name: Check if file exists
+      stat:
+        path: "{{project_location}}/{{output_folder}}/order.txt"
+      register: file_info
+      when: function_id != "pipeline"
+
+    - name: Append input to file
+      copy:
+        dest: "{{project_location}}/{{output_folder}}/order.txt"
+        content: |
+          {% if file_info.stat.exists %}
+          {{ lookup('file', '{{project_location}}/pipeline/order.txt') }}
+          {% endif %}
+          {{function_id}}
+      when:
+        - function_id != "pipeline"
+        - parameters == "none"
+
+    - name: Append input to file
+      copy:
+        dest: "{{project_location}}/{{output_folder}}/order.txt"
+        content: |
+          {% if file_info.stat.exists %}
+          {{ lookup('file', '{{project_location}}/pipeline/order.txt') }}
+          {% endif %}
+          {{function_id}}-|-{{parameters}}
+      when:
+        - function_id != "pipeline"
+        - parameters != "none"
+
+    - name: Set project location
+      set_stats:
+        data:
+          project_location: "{{project_location}}"
+

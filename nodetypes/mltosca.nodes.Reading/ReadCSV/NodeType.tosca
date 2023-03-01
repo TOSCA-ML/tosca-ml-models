@@ -54,6 +54,10 @@ node_types:
                 type: string
                 required: true
                 default: { get_attribute: [ SELF, host, project_location ] }
+              output_folder:
+                type: string
+                required: true
+                default: { get_attribute: [ SELF, output_folder ] }
             implementation:
               primary: create
               timeout: 0

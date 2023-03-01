@@ -1,0 +1,23 @@
+---
+- name: Write execution count to file
+  hosts: localhost
+
+  tasks:
+    - name: Create my_folder directory
+      file:
+        path: "{{ project_location }}/pipeline"
+        state: directory
+
+    - name: Check if file exists
+      stat:
+        path: "{{ project_location }}/pipeline/count.txt"
+      register: file_info
+
+    - name: Append input to file
+      copy:
+        dest: "{{ project_location }}/pipeline/count.txt"
+        content: |
+          {% if file_info.stat.exists %}
+          {{ lookup('file', '{{ project_location }}/pipeline/count.txt') }}
+          {% endif %}
+          {{ function_id }}

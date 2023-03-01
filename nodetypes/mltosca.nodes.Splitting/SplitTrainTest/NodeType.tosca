@@ -1,0 +1,50 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.Splitting.SplitTrainTest:
+    derived_from: mltosca.nodes.Splitting
+    metadata:
+      targetNamespace: "mltosca.nodes.Splitting"
+      abstract: "false"
+      final: "false"
+    attributes:
+      function_id:
+        type: string
+        default: "split_train_test"
+    properties:
+      test_size:
+        type: float
+        default: 0.2
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          create:
+            description: The standard create operation
+            inputs:
+              test_size:
+                type: float
+                required: true
+                default: { get_property: [ SELF, test_size ] }
+              previous_output_folder:
+                type: string
+                required: true
+                default: { get_attribute: [ SELF, previous_output_folder ] }
+              output_folder:
+                type: string
+                required: true
+                default: { get_attribute: [ SELF, function_id ] }
+              project_location:
+                type: string
+                required: true
+                default: { get_attribute: [ SELF, host, project_location ] }
+            implementation:
+              primary: create
+              timeout: 0
+    artifacts:
+      create:
+        type: radon.artifacts.Ansible
+        file: create.yml
+      script:
+        type: tosca.artifacts.File
+        file: split.py

@@ -8,8 +8,7 @@
       file:
         path: "{{ project_location }}/{{output_folder}}"
         state: directory
-
     - name: Activate Conda environment
-      shell: ". ~/anaconda3/bin/activate mltosca && python ReadCSV.py {{project_location}}/{{output_folder}} {{filepath}} {{delimiter}} {{encoding}} &"
-
-      # // TODO: check if file exists and throw error
+      shell: ". ~/anaconda3/bin/activate mltosca && python script.py
+      {{project_location}}/{{output_folder}} {{project_location}}/{{previous_output_folder}}
+      {{target}} {{criterion}} {{max_depth}} {{min_samples_split}} {{n_estimators}} &"
