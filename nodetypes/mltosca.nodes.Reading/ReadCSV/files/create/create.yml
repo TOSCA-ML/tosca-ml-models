@@ -4,6 +4,16 @@
   gather_facts: no
 
   tasks:
+    - name: Check if file exists
+      stat:
+        path: "{{ filepath }}"
+      register: file_stat
+
+    - name: Throw error if file does not exist
+      fail:
+        msg: "File does not exist"
+      when: not file_stat.stat.exists
+
     - name: Create folder
       file:
         path: "{{ project_location }}/{{output_folder}}"
@@ -11,5 +21,3 @@
 
     - name: Activate Conda environment
       shell: ". ~/anaconda3/bin/activate mltosca && python ReadCSV.py {{project_location}}/{{output_folder}} {{filepath}} {{delimiter}} {{encoding}} &"
-
-      # // TODO: check if file exists and throw error
