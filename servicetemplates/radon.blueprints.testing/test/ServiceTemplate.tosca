@@ -4,174 +4,80 @@ metadata:
   targetNamespace: "radon.blueprints.testing"
 topology_template:
   node_templates:
-    ReplaceCategoricalValues_0:
-      type: mltosca.nodes.Preprocessing.ReplaceCategoricalValues
-      metadata:
-        x: "1237"
-        y: "160"
-        displayName: "ReplaceCategoricalValues"
-      properties:
-        column: "Sex"
-      requirements:
-        - connection:
-            node: ReplaceCategoricalValues_1
-            relationship: con_ConnectsTo_6
-            capability: connection
-        - host:
-            node: Pipeline_0
-            relationship: con_HostedOn_6
-            capability: host
     Pipeline_0:
       type: mltosca.nodes.Preprocessing.Pipeline
       metadata:
-        x: "451"
-        y: "451"
+        x: "812"
+        y: "409"
         displayName: "Pipeline"
       requirements:
+        - dependency:
+            node: ReadCSV_0
+            relationship: con_DependsOn_0
+            capability: feature
         - host:
             node: Conda_0
             relationship: con_HostedOn_1
             capability: host
-    ReplaceNanValues_1:
-      type: mltosca.nodes.Preprocessing.ReplaceNanValues
+    SplitTrainTest_0:
+      type: mltosca.nodes.Splitting.SplitTrainTest
       metadata:
-        x: "476"
-        y: "195"
-        displayName: "ReplaceNanValues"
+        x: "1372"
+        y: "426"
+        displayName: "SplitTrainTest"
       properties:
-        method: "mode"
-        column: "Embarked"
-        value: "None"
+        test_size: 0.2
       requirements:
-        - connection:
-            node: ShuffleRows_0
-            relationship: con_ConnectsTo_3
-            capability: connection
-        - host:
+        - dependency:
             node: Pipeline_0
-            relationship: con_HostedOn_4
+            relationship: con_DependsOn_1
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_2
             capability: host
     Conda_0:
       type: mltosca.nodes.Environment.Conda
       metadata:
-        x: "471"
-        y: "742"
+        x: "640"
+        y: "709"
         displayName: "Conda"
-    ReplaceNanValues_0:
-      type: mltosca.nodes.Preprocessing.ReplaceNanValues
-      metadata:
-        x: "471"
-        y: "70"
-        displayName: "ReplaceNanValues"
-      properties:
-        method: "mean"
-        column: "Age"
-        value: "None"
-      requirements:
-        - connection:
-            node: ShuffleRows_0
-            relationship: con_ConnectsTo_2
-            capability: connection
-        - host:
-            node: Pipeline_0
-            relationship: con_HostedOn_3
-            capability: host
     ShuffleRows_0:
       type: mltosca.nodes.Preprocessing.ShuffleRows
       metadata:
-        x: "850"
-        y: "139"
+        x: "796"
+        y: "99"
         displayName: "ShuffleRows"
       requirements:
-        - connection:
-            node: ReplaceCategoricalValues_0
-            relationship: con_ConnectsTo_5
-            capability: connection
         - host:
             node: Pipeline_0
-            relationship: con_HostedOn_5
+            relationship: con_HostedOnPipeline_0
             capability: host
     ReadCSV_0:
       type: mltosca.nodes.Reading.ReadCSV
       metadata:
-        x: "18"
-        y: "469"
+        x: "208"
+        y: "451"
         displayName: "ReadCSV"
       properties:
         filepath: "/home/artjom/thesis/TOSCA-ML/project1/data/data.csv"
         delimiter: ","
         encoding: "UTF-8"
       requirements:
-        - connection:
-            node: RemoveColumns_0
-            relationship: con_ConnectsTo_4
-            capability: connection
         - host:
             node: Conda_0
             relationship: con_HostedOn_0
             capability: host
-    ReplaceCategoricalValues_1:
-      type: mltosca.nodes.Preprocessing.ReplaceCategoricalValues
-      metadata:
-        x: "1565"
-        y: "164"
-        displayName: "ReplaceCategoricalValues"
-      properties:
-        column: "Embarked"
-      requirements:
-        - host:
-            node: Pipeline_0
-            relationship: con_HostedOn_7
-            capability: host
-    RemoveColumns_0:
-      type: mltosca.nodes.Preprocessing.RemoveColumns
-      metadata:
-        x: "32"
-        y: "129"
-        displayName: "RemoveColumns"
-      properties:
-        columns: "PassengerId, Name, Cabin, Ticket"
-      requirements:
-        - connection:
-            node: ReplaceNanValues_0
-            relationship: con_ConnectsTo_0
-            capability: connection
-        - connection:
-            node: ReplaceNanValues_1
-            relationship: con_ConnectsTo_1
-            capability: connection
-        - host:
-            node: Pipeline_0
-            relationship: con_HostedOn_2
-            capability: host
   relationship_templates:
     con_HostedOn_2:
       type: tosca.relationships.HostedOn
-    con_HostedOn_3:
-      type: tosca.relationships.HostedOn
+    con_DependsOn_0:
+      type: tosca.relationships.DependsOn
+    con_DependsOn_1:
+      type: tosca.relationships.DependsOn
     con_HostedOn_0:
       type: tosca.relationships.HostedOn
     con_HostedOn_1:
       type: tosca.relationships.HostedOn
-    con_HostedOn_6:
-      type: tosca.relationships.HostedOn
-    con_HostedOn_7:
-      type: tosca.relationships.HostedOn
-    con_HostedOn_4:
-      type: tosca.relationships.HostedOn
-    con_HostedOn_5:
-      type: tosca.relationships.HostedOn
-    con_ConnectsTo_2:
-      type: radon.relationships.ConnectsTo
-    con_ConnectsTo_3:
-      type: radon.relationships.ConnectsTo
-    con_ConnectsTo_4:
-      type: radon.relationships.ConnectsTo
-    con_ConnectsTo_5:
-      type: radon.relationships.ConnectsTo
-    con_ConnectsTo_0:
-      type: radon.relationships.ConnectsTo
-    con_ConnectsTo_1:
-      type: radon.relationships.ConnectsTo
-    con_ConnectsTo_6:
-      type: radon.relationships.ConnectsTo
+    con_HostedOnPipeline_0:
+      type: mltosca.relationships.HostedOnPipeline

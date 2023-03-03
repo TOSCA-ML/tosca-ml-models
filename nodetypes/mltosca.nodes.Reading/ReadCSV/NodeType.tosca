@@ -11,60 +11,15 @@ node_types:
       function_id:
         type: string
         default: "read_csv"
-    properties:
-      filepath:
+      parameters:
         type: string
-        description: The path of the CSV file to read
+        default: { concat: [ { get_property: [ SELF, delimiter ] }, "#_#", { get_property: [ SELF, encoding ] } ] }
+    properties:
       delimiter:
         type: string
         description: The character used to separate the values in the CSV file
-        required: false
         default: ","
       encoding:
         type: string
         description: The character encoding used in the CSV file
-        required: false
         default: "UTF-8"
-    requirements:
-      - host:
-          capability: tosca.capabilities.Compute
-          node: mltosca.nodes.Environment
-          relationship: tosca.relationships.HostedOn
-          occurrences: [ 1, 1 ]
-    interfaces:
-      Standard:
-        type: tosca.interfaces.node.lifecycle.Standard
-        operations:
-          create:
-            description: The standard create operation
-            inputs:
-              filepath:
-                type: string
-                required: true
-                default: { get_property: [ SELF, filepath ] }
-              delimiter:
-                type: string
-                required: true
-                default: { get_property: [ SELF, delimiter ] }
-              encoding:
-                type: string
-                required: true
-                default: { get_property: [ SELF, encoding ] }
-              project_location:
-                type: string
-                required: true
-                default: { get_attribute: [ SELF, host, project_location ] }
-              output_folder:
-                type: string
-                required: true
-                default: { get_attribute: [ SELF, output_folder ] }
-            implementation:
-              primary: create
-              timeout: 0
-    artifacts:
-      create:
-        type: radon.artifacts.Ansible
-        file: create.yml
-      script:
-        type: tosca.artifacts.File
-        file: ReadCSV.py

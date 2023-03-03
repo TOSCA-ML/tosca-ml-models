@@ -1,4 +1,5 @@
 import sys
+import json
 import time
 import os.path
 import pandas as pd
@@ -83,14 +84,26 @@ def create_pipeline(path: str) -> str:
   return pipe_chain
 
 
-def count_lines(filename):
+def count_lines(filename: str) -> int:
   with open(filename, 'r') as f:
     lines = f.readlines()
     return len(lines)
 
 
+def read_config_file(config_path) -> str:
+  with open(config_path, 'r') as f:
+    config = json.load(f)
+  return config['filenames'][0]
+
+
+def setup_config_file(project_location, dataframe_name='df.pkl'):
+  with open(project_location + '/configuration.json', 'w') as file:
+    json.dump({'filenames': [dataframe_name]}, file, indent=4)
+
+
 def main():
   output_folder, previous_output_folder = sys.argv[1], sys.argv[2]
+  setup_config_file(output_folder)
   functions_count = count_lines(output_folder + '/count.txt')
 
   while True:
@@ -100,9 +113,14 @@ def main():
         if len(lines) == functions_count:
           break
 
-  while not os.path.isfile(previous_output_folder + '/df.pkl'):
+  while not os.path.isfile(previous_output_folder + '/configuration.json'):
     time.sleep(1)
-  df = read_dataframe(previous_output_folder + '/df.pkl')
+
+  dataframe_file = read_config_file(previous_output_folder + '/configuration.json')
+
+  while not os.path.isfile(previous_output_folder + '/' + dataframe_file):
+    time.sleep(1)
+  df = read_dataframe(previous_output_folder + '/' + dataframe_file)
 
   pipeline = create_pipeline(output_folder + '/order.txt')
   df = eval(pipeline)

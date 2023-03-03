@@ -20,4 +20,4 @@
         state: directory
 
     - name: Activate Conda environment
-      shell: ". ~/anaconda3/bin/activate mltosca && python ReadCSV.py {{project_location}}/{{output_folder}} {{filepath}} {{delimiter}} {{encoding}} &"
+      shell: ". ~/anaconda3/bin/activate mltosca && python ReadFile.py {{project_location}}/{{output_folder}} {{filepath}} {{parameters}}"
