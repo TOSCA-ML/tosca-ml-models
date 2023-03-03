@@ -1,5 +1,5 @@
 ---
-- name: Activate Conda environment and run Python script
+- name: Evaluation
   hosts: localhost
   gather_facts: no
 
@@ -8,7 +8,7 @@
       file:
         path: "{{ project_location }}/{{output_folder}}"
         state: directory
+
     - name: Activate Conda environment
       shell: ". ~/anaconda3/bin/activate mltosca && python script.py
-      {{project_location}}/{{output_folder}} {{project_location}}/{{data_folder}}
-      {{target}} {{criterion}} {{max_depth}} {{min_samples_split}} {{n_estimators}} &"
+      {{project_location}}/{{output_folder}} {{project_location}}/{{data_folder}} {{project_location}}/{{model_folder}} &"

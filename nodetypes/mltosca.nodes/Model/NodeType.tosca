@@ -13,7 +13,7 @@ node_types:
           relationship: tosca.relationships.HostedOn
           occurrences: [ 1, 1 ]
     attributes:
-      previous_output_folder:
+      data_folder:
         type: string
         default: { get_attribute: [ SELF, dependency, output_folder ] }
       output_folder:

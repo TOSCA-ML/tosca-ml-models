@@ -41,13 +41,13 @@ def create_model(n_estimators, criterion, max_depth, min_samples_split):
 
 
 if __name__ == "__main__":
-  output_folder, previous_output_folder, target, criterion, max_depth, min_samples_split, n_estimators = \
+  output_folder, data_folder, target, criterion, max_depth, min_samples_split, n_estimators = \
     sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]
 
-  while not os.path.isfile(previous_output_folder + '/configuration.json'):
+  while not os.path.isfile(data_folder + '/configuration.json'):
     time.sleep(1)
-  train_dataframe = read_config_file(previous_output_folder + '/configuration.json')
+  train_dataframe = read_config_file(data_folder + '/configuration.json')
 
   model = create_model(int(n_estimators), criterion, int(max_depth), int(min_samples_split))
-  model = train_model(model, previous_output_folder + '/' + train_dataframe, target)
+  model = train_model(model, data_folder + '/' + train_dataframe, target)
   save_model(model, output_folder + '/model.pkl')

@@ -1,5 +1,5 @@
 ---
-- name: Test
+- name: Preprocessing
   hosts: localhost
   gather_facts: no
 
@@ -24,7 +24,7 @@
         dest: "{{project_location}}/{{output_folder}}/order.txt"
         content: |
           {% if file_info.stat.exists %}
-          {{ lookup('file', '{{project_location}}/pipeline/order.txt') }}
+          {{ lookup('file', '{{project_location}}/{{output_folder}}/order.txt') }}
           {% endif %}
           {{function_id}}
       when:
@@ -36,7 +36,7 @@
         dest: "{{project_location}}/{{output_folder}}/order.txt"
         content: |
           {% if file_info.stat.exists %}
-          {{ lookup('file', '{{project_location}}/pipeline/order.txt') }}
+          {{ lookup('file', '{{project_location}}/{{output_folder}}/order.txt') }}
           {% endif %}
           {{function_id}}-|-{{parameters}}
       when:
