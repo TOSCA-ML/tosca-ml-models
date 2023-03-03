@@ -115,7 +115,6 @@ def main():
 
   while not os.path.isfile(previous_output_folder + '/configuration.json'):
     time.sleep(1)
-
   dataframe_file = read_config_file(previous_output_folder + '/configuration.json')
 
   while not os.path.isfile(previous_output_folder + '/' + dataframe_file):

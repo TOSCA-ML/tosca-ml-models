@@ -35,12 +35,10 @@ if __name__ == "__main__":
 
   while not os.path.isfile(previous_output_folder + '/configuration.json'):
     time.sleep(1)
-
   dataframe_file = read_config_file(previous_output_folder + '/configuration.json')
 
   while not os.path.isfile(previous_output_folder + '/' +dataframe_file):
     time.sleep(1)
-
   df = read_dataframe(previous_output_folder + '/' +dataframe_file)
   train, test = train_test_split(df, test_size)
 

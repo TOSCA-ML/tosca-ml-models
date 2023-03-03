@@ -4,6 +4,27 @@ metadata:
   targetNamespace: "radon.blueprints.testing"
 topology_template:
   node_templates:
+    RandomForestClassifier_0:
+      type: mltosca.nodes.Sklearn.RandomForestClassifier
+      metadata:
+        x: "1298"
+        y: "389"
+        displayName: "RandomForestClassifier"
+      properties:
+        criterion: "gini"
+        min_samples_split: 2
+        max_depth: 3
+        n_estimators: 100
+        target: "Survived"
+      requirements:
+        - dependency:
+            node: Pipeline_0
+            relationship: con_DependsOn_1
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_2
+            capability: host
     Pipeline_0:
       type: mltosca.nodes.Preprocessing.Pipeline
       metadata:
@@ -18,23 +39,6 @@ topology_template:
         - host:
             node: Conda_0
             relationship: con_HostedOn_1
-            capability: host
-    SplitTrainTest_0:
-      type: mltosca.nodes.Splitting.SplitTrainTest
-      metadata:
-        x: "1372"
-        y: "426"
-        displayName: "SplitTrainTest"
-      properties:
-        test_size: 0.2
-      requirements:
-        - dependency:
-            node: Pipeline_0
-            relationship: con_DependsOn_1
-            capability: feature
-        - host:
-            node: Conda_0
-            relationship: con_HostedOn_2
             capability: host
     Conda_0:
       type: mltosca.nodes.Environment.Conda
