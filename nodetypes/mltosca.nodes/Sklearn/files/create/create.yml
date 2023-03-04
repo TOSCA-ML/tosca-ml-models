@@ -8,7 +8,6 @@
       file:
         path: "{{ project_location }}/{{output_folder}}"
         state: directory
+
     - name: Activate Conda environment
-      shell: ". ~/anaconda3/bin/activate mltosca && python script.py
-      {{project_location}}/{{output_folder}} {{project_location}}/{{data_folder}}
-      {{target}} {{criterion}} {{max_depth}} {{min_samples_split}} {{n_estimators}} &"
+      shell: ". ~/anaconda3/bin/activate mltosca && python script.py {{project_location}}/{{output_folder}} {{project_location}}/{{data_folder}} {{target}} {{parameters}} &"

@@ -7,19 +7,68 @@ topology_template:
     Accuracy_0:
       type: mltosca.nodes.Evaluation.Accuracy
       metadata:
-        x: "1269"
-        y: "88"
+        x: "1496"
+        y: "280"
         displayName: "Accuracy"
       requirements:
         - host:
             node: EvaluationPipeline_0
             relationship: con_HostedOnEvaluation_0
             capability: host
+    RandomForestClassifier_0:
+      type: mltosca.nodes.Sklearn.RandomForestClassifier
+      metadata:
+        x: "1161"
+        y: "538"
+        displayName: "RandomForestClassifier"
+      properties:
+        criterion: "gini"
+        min_samples_split: 2
+        max_depth: 3
+        n_estimators: 100
+        target: "Survived"
+      requirements:
+        - dependency:
+            node: Pipeline_0
+            relationship: con_DependsOn_2
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_2
+            capability: host
+    KeepColumns_0:
+      type: mltosca.nodes.Preprocessing.KeepColumns
+      metadata:
+        x: "604"
+        y: "148"
+        displayName: "KeepColumns"
+      properties:
+        columns: "Pclass, Age, Survived, Parch"
+      requirements:
+        - host:
+            node: Pipeline_0
+            relationship: con_HostedOnPipeline_0
+            capability: host
+    RemoveNanRows_0:
+      type: mltosca.nodes.Preprocessing.RemoveNanRows
+      metadata:
+        x: "1043"
+        y: "118"
+        displayName: "RemoveNanRows"
+      requirements:
+        - dependency:
+            node: KeepColumns_0
+            relationship: con_DependsOn_1
+            capability: feature
+        - host:
+            node: Pipeline_0
+            relationship: con_HostedOnPipeline_1
+            capability: host
     Pipeline_0:
       type: mltosca.nodes.Preprocessing.Pipeline
       metadata:
-        x: "813"
-        y: "408"
+        x: "875"
+        y: "400"
         displayName: "Pipeline"
       requirements:
         - dependency:
@@ -30,39 +79,17 @@ topology_template:
             node: Conda_0
             relationship: con_HostedOn_1
             capability: host
-    Precision_0:
-      type: mltosca.nodes.Evaluation.Precision
-      metadata:
-        x: "1567"
-        y: "85"
-        displayName: "Precision"
-      requirements:
-        - host:
-            node: EvaluationPipeline_0
-            relationship: con_HostedOnEvaluation_1
-            capability: host
     Conda_0:
       type: mltosca.nodes.Environment.Conda
       metadata:
-        x: "640"
-        y: "709"
+        x: "616"
+        y: "713"
         displayName: "Conda"
-    ShuffleRows_0:
-      type: mltosca.nodes.Preprocessing.ShuffleRows
-      metadata:
-        x: "796"
-        y: "99"
-        displayName: "ShuffleRows"
-      requirements:
-        - host:
-            node: Pipeline_0
-            relationship: con_HostedOnPipeline_0
-            capability: host
     ReadCSV_0:
       type: mltosca.nodes.Reading.ReadCSV
       metadata:
-        x: "208"
-        y: "451"
+        x: "322"
+        y: "406"
         displayName: "ReadCSV"
       properties:
         filepath: "/home/artjom/thesis/TOSCA-ML/project1/data/data.csv"
@@ -76,32 +103,38 @@ topology_template:
     EvaluationPipeline_0:
       type: mltosca.nodes.Evaluation.EvaluationPipeline
       metadata:
-        x: "1324"
-        y: "489"
+        x: "1528"
+        y: "591"
         displayName: "EvaluationPipeline"
       requirements:
         - dependency:
-            node: Pipeline_0
-            relationship: con_DependsOn_1
+            node: RandomForestClassifier_0
+            relationship: con_DependsOn_3
             capability: feature
         - host:
             node: Conda_0
-            relationship: con_HostedOn_2
+            relationship: con_HostedOn_3
             capability: host
   relationship_templates:
     con_HostedOn_2:
       type: tosca.relationships.HostedOn
     con_DependsOn_0:
       type: tosca.relationships.DependsOn
+    con_HostedOn_3:
+      type: tosca.relationships.HostedOn
     con_DependsOn_1:
       type: tosca.relationships.DependsOn
     con_HostedOn_0:
       type: tosca.relationships.HostedOn
     con_HostedOn_1:
       type: tosca.relationships.HostedOn
-    con_HostedOnEvaluation_1:
-      type: mltosca.relationships.HostedOnEvaluation
+    con_DependsOn_2:
+      type: tosca.relationships.DependsOn
+    con_DependsOn_3:
+      type: tosca.relationships.DependsOn
     con_HostedOnPipeline_0:
       type: mltosca.relationships.HostedOnPipeline
     con_HostedOnEvaluation_0:
       type: mltosca.relationships.HostedOnEvaluation
+    con_HostedOnPipeline_1:
+      type: mltosca.relationships.HostedOnPipeline

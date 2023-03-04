@@ -1,7 +1,7 @@
 tosca_definitions_version: tosca_simple_yaml_1_3
 
 node_types:
-  mltosca.nodes.Sklearn.RandomForestClassifier:
+  mltosca.nodes.Sklearn.KNeighborsClassifier:
     derived_from: mltosca.nodes.Sklearn
     metadata:
       targetNamespace: "mltosca.nodes.Sklearn"
@@ -10,17 +10,17 @@ node_types:
     attributes:
       function_id:
         type: string
-        default: "random_forest_classifier"
+        default: "k_neighbors_classifier"
     properties:
-      criterion:
+      leaf_size:
+        type: integer
+        default: 30
+      weights:
         type: string
-        default: "gini"
-      min_samples_split:
+        default: "uniform"
+      n_neighbors:
         type: integer
-        default: 2
-      max_depth:
-        type: integer
-        default: 3
-      n_estimators:
-        type: integer
-        default: 100
+        default: 5
+      algorithm:
+        type: string
+        default: "auto"
