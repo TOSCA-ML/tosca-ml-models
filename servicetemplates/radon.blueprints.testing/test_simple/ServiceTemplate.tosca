@@ -208,7 +208,7 @@ topology_template:
       requirements:
         - dependency:
             node: RandomForestClassifier_0
-            relationship: con_DependsOn_7
+            relationship: con_DependsOnModel_0
             capability: feature
         - host:
             node: Conda_0
@@ -229,9 +229,9 @@ topology_template:
       type: mltosca.relationships.HostedOnPipeline
     con_HostedOn_1:
       type: tosca.relationships.HostedOn
+    con_DependsOnModel_0:
+      type: mltosca.relationships.DependsOnModel
     con_DependsOn_6:
-      type: tosca.relationships.DependsOn
-    con_DependsOn_7:
       type: tosca.relationships.DependsOn
     con_HostedOnPipeline_0:
       type: mltosca.relationships.HostedOnPipeline

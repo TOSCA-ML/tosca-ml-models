@@ -10,5 +10,4 @@
         state: directory
 
     - name: Activate Conda environment
-      shell: ". ~/anaconda3/bin/activate mltosca && python script.py
-      {{project_location}}/{{output_folder}} {{project_location}}/{{data_folder}} {{project_location}}/{{model_folder}} &"
+      shell: ". ~/anaconda3/bin/activate mltosca && python script.py {{project_location}} {{output_folder}} &"

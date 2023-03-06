@@ -8,9 +8,6 @@ node_types:
       abstract: "false"
       final: "false"
     attributes:
-      output_folder:
-        type: string
-        default: "evaluation"
       function_id:
         type: string
         default: "evaluation"
@@ -30,10 +27,6 @@ node_types:
           configure:
             description: The standard configure operation
             inputs:
-              function_id:
-                type: string
-                required: false
-                default: { get_attribute: [ SELF, function_id ] }
               project_location:
                 type: string
                 required: false
@@ -41,14 +34,7 @@ node_types:
               output_folder:
                 type: string
                 required: true
-                default: { get_attribute: [ SELF, output_folder ] }
-              model_folder:
-                type: string
-                required: true
-                default: { get_attribute: [ SELF, dependency, output_folder ] }
-              data_folder:
-                type: string
-                default: { get_attribute: [ SELF, dependency, data_folder ] }
+                default: { get_attribute: [ SELF, function_id ] }
             implementation:
               primary: configure
               timeout: 0

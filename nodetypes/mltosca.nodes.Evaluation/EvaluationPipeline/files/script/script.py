@@ -38,35 +38,44 @@ def read_evaluation_functions(output_folder: str):
 
 
 if __name__ == "__main__":
-  output_folder, data_folder, model_folder = sys.argv[1], sys.argv[2], sys.argv[3]
-  model = wait_for_model(model_folder)
-  model_name = model_folder.split('/')[-1]
-  test_data = wait_for_data(data_folder)
-  functions = read_evaluation_functions(output_folder)
+  project_location, output_folder = sys.argv[1], sys.argv[2]
 
-  X = test_data.drop('Survived', axis=1)
-  y_true = test_data['Survived']
-  y_pred = model.predict(X)
-  results = dict()
+  while not os.path.isfile(project_location + '/' + output_folder + '/models.txt'):
+    time.sleep(1)
 
-  for function in functions:
-    if function == 'accuracy':
-      results['accuracy'] = accuracy_score(y_true, y_pred)
-    elif function == 'precision':
-      results['precision'] = precision_score(y_true, y_pred, average='weighted')
-    elif function == 'f1':
-      results['f1'] = f1_score(y_true, y_pred, average='weighted')
-    elif function == 'recall':
-      results['recall'] = recall_score(y_true, y_pred, average='weighted')
-    elif function == 'r2':
-      results['r2'] = r2_score(y_true, y_pred)
-    elif function == 'mse':
-      results['mse'] = mean_squared_error(y_true, y_pred)
-    elif function == 'rmse':
-      results['rmse'] = mean_squared_error(y_true, y_pred, squared=False)
-    elif function == 'mae':
-      results['mae'] = mean_absolute_error(y_true, y_pred)
+  with open(project_location + '/' + output_folder + '/models.txt') as file:
+    models = [line.rstrip() for line in file]
 
-  with open(output_folder + '/' + model_name + '_evaluation.txt', 'w') as f:
-    for key, value in results.items():
-      f.write(f"{key}: {value}\n")
+  for model_description in models:
+    model_name, data_folder = model_description.split("#_#")
+
+    model = wait_for_model(project_location + '/' + model_name)
+    test_data = wait_for_data(project_location + '/' + data_folder)
+    functions = read_evaluation_functions(project_location + '/' + output_folder)
+
+    X = test_data.drop('Survived', axis=1)
+    y_true = test_data['Survived']
+    y_pred = model.predict(X)
+    results = dict()
+
+    for function in functions:
+      if function == 'accuracy':
+        results['accuracy'] = accuracy_score(y_true, y_pred)
+      elif function == 'precision':
+        results['precision'] = precision_score(y_true, y_pred, average='weighted')
+      elif function == 'f1':
+        results['f1'] = f1_score(y_true, y_pred, average='weighted')
+      elif function == 'recall':
+        results['recall'] = recall_score(y_true, y_pred, average='weighted')
+      elif function == 'r2':
+        results['r2'] = r2_score(y_true, y_pred)
+      elif function == 'mse':
+        results['mse'] = mean_squared_error(y_true, y_pred)
+      elif function == 'rmse':
+        results['rmse'] = mean_squared_error(y_true, y_pred, squared=False)
+      elif function == 'mae':
+        results['mae'] = mean_absolute_error(y_true, y_pred)
+
+    with open(project_location + '/' + output_folder + '/' + model_name + '_evaluation.txt', 'w') as f:
+      for key, value in results.items():
+        f.write(f"{key}: {value}\n")
