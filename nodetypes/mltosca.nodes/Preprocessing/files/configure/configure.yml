@@ -1,7 +1,7 @@
 ---
 - name: Preprocessing
-  hosts: localhost
-  gather_facts: no
+  hosts: all
+  gather_facts: yes
 
   tasks:
     - name: Create folder
@@ -9,22 +9,39 @@
         path: "{{ project_location }}/{{output_folder}}"
         state: directory
 
-    - name: Execute background job
-      shell: ". ~/anaconda3/bin/activate mltosca && python create_pipeline.py {{project_location}}/{{output_folder}} {{project_location}}/{{previous_output_folder}} &"
+    - name: Copy files to external VM
+      synchronize:
+        src: create_pipeline.py
+        dest: "{{ ansible_env.HOME }}/create_pipeline.py"
       when: function_id == "pipeline"
+
+    - name: Execute background job
+      shell: ". ~/anaconda3/bin/activate mltosca && nohup python create_pipeline.py {{project_location}}/{{output_folder}} {{project_location}}/{{previous_output_folder}} &"
+      when: function_id == "pipeline"
+
+    - name: Remove file
+      file:
+        path: "{{ ansible_env.HOME }}/create_pipeline.py"
+        state: absent
+      when: function_id == "pipeline"
+
 
     - name: Check if file exists
       stat:
         path: "{{project_location}}/{{output_folder}}/order.txt"
       register: file_info
-      when: function_id != "pipeline"
+
+    - name: get remote file contents
+      command: "cat {{project_location}}/{{output_folder}}/order.txt"
+      register: file_content
+      when: file_info.stat.exists
 
     - name: Append input to file
       copy:
         dest: "{{project_location}}/{{output_folder}}/order.txt"
         content: |
           {% if file_info.stat.exists %}
-          {{ lookup('file', '{{project_location}}/{{output_folder}}/order.txt') }}
+          {{ file_content.stdout }}
           {% endif %}
           {{function_id}}
       when:
@@ -36,7 +53,7 @@
         dest: "{{project_location}}/{{output_folder}}/order.txt"
         content: |
           {% if file_info.stat.exists %}
-          {{ lookup('file', '{{project_location}}/{{output_folder}}/order.txt') }}
+          {{ file_content.stdout }}
           {% endif %}
           {{function_id}}-|-{{parameters}}
       when:

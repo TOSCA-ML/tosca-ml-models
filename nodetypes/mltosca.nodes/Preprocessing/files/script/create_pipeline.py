@@ -110,8 +110,9 @@ def main():
     if os.path.isfile(output_folder + '/order.txt'):
       with open(output_folder + '/order.txt', 'r') as f:
         lines = f.readlines()
-        if len(lines) == functions_count:
-          break
+      if len(lines) == functions_count:
+        break
+    time.sleep(1)
 
   while not os.path.isfile(previous_output_folder + '/configuration.json'):
     time.sleep(1)

@@ -1,6 +1,6 @@
 ---
 - name: Write execution count to file
-  hosts: localhost
+  hosts: all
 
   tasks:
     - name: Create my_folder directory
@@ -13,11 +13,16 @@
         path: "{{ project_location }}/evaluation/metrics.txt"
       register: file_info
 
+    - name: get remote file contents
+      command: "cat {{ project_location }}/evaluation/metrics.txt"
+      register: file_content
+      when: file_info.stat.exists
+
     - name: Append input to file
       copy:
         dest: "{{ project_location }}/evaluation/metrics.txt"
         content: |
           {% if file_info.stat.exists %}
-          {{ lookup('file', '{{ project_location }}/evaluation/metrics.txt') }}
+          {{ file_content.stdout }}
           {% endif %}
           {{ function_id }}

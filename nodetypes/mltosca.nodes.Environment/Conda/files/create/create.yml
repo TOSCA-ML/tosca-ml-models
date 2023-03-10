@@ -1,6 +1,6 @@
 ---
 - name: Create Conda Environment and Install Packages
-  hosts: localhost
+  hosts: all
   gather_facts: no
   vars:
     conda_env_name: "mltosca"

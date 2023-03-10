@@ -1,0 +1,63 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  radon.nodes.VM.RemoteWorkstation:
+    derived_from: tosca.nodes.Compute
+    metadata:
+      targetNamespace: "radon.nodes.VM"
+      abstract: "false"
+      final: "false"
+    attributes:
+      public_ip:
+        description: this is public IP
+        type: string
+      public_address:
+        description: This is similar to External IP
+        type: string
+      id:
+        description: public IP of the VM
+        type: string
+    properties:
+      ssh_username:
+        type: string
+      KeyFile:
+        type: string
+        description: Give the path to the Key file OR give the key file artifact
+        required: false
+      external_ip:
+        type: string
+        description: provide the external Ip of the existing VM.
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          stop:
+            description: The standard stop operation
+          start:
+            description: The standard start operation
+          create:
+            description: The standard create operation
+            inputs:
+              ssh_username:
+                type: string
+                required: true
+                default: { get_property: [ SELF, ssh_username ] }
+              KeyFile:
+                type: string
+                required: true
+                default: { get_property: [ SELF, KeyFile ] }
+              external_ip:
+                type: string
+                required: true
+                default: { get_property: [ SELF, external_ip ] }
+            implementation:
+              primary: create
+              timeout: 0
+          configure:
+            description: The standard configure operation
+          delete:
+            description: The standard delete operation
+    artifacts:
+      create:
+        type: radon.artifacts.Ansible
+        file: create.yml

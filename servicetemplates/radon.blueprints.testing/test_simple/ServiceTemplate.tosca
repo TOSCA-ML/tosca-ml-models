@@ -7,8 +7,8 @@ topology_template:
     RandomForestClassifier_0:
       type: mltosca.nodes.Sklearn.RandomForestClassifier
       metadata:
-        x: "1815"
-        y: "464"
+        x: "2141"
+        y: "426"
         displayName: "RandomForestClassifier"
       properties:
         criterion: "gini"
@@ -25,6 +25,16 @@ topology_template:
             node: Conda_0
             relationship: con_HostedOn_3
             capability: host
+    RemoteWorkstation_0:
+      type: radon.nodes.VM.RemoteWorkstation
+      metadata:
+        x: "440"
+        y: "855"
+        displayName: "RemoteWorkstation"
+      properties:
+        ssh_username: "centos"
+        KeyFile: "/home/artjom/.ssh/id_rsa"
+        external_ip: "172.17.90.27"
     Precision_0:
       type: mltosca.nodes.Evaluation.Precision
       metadata:
@@ -91,6 +101,27 @@ topology_template:
         - host:
             node: Pipeline_0
             relationship: con_HostedOnPipeline_1
+            capability: host
+    KNeighborsClassifier_0:
+      type: mltosca.nodes.Sklearn.KNeighborsClassifier
+      metadata:
+        x: "1791"
+        y: "480"
+        displayName: "KNeighborsClassifier"
+      properties:
+        leaf_size: 30
+        weights: "uniform"
+        n_neighbors: 5
+        algorithm: "auto"
+        target: "Survived"
+      requirements:
+        - dependency:
+            node: SplitTrainTest_0
+            relationship: con_DependsOn_7
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_5
             capability: host
     ReplaceCategoricalValues_0:
       type: mltosca.nodes.Preprocessing.ReplaceCategoricalValues
@@ -173,6 +204,11 @@ topology_template:
         x: "424"
         y: "562"
         displayName: "Conda"
+      requirements:
+        - host:
+            node: RemoteWorkstation_0
+            relationship: con_HostedOn_6
+            capability: host
     ReadCSV_0:
       type: mltosca.nodes.Reading.ReadCSV
       metadata:
@@ -180,7 +216,7 @@ topology_template:
         y: "321"
         displayName: "ReadCSV"
       properties:
-        filepath: "/home/artjom/thesis/TOSCA-ML/project1/data/data.csv"
+        filepath: "/home/centos/data.csv"
         delimiter: ","
         encoding: "UTF-8"
       requirements:
@@ -210,35 +246,15 @@ topology_template:
             node: RandomForestClassifier_0
             relationship: con_DependsOnModel_0
             capability: feature
+        - dependency:
+            node: KNeighborsClassifier_0
+            relationship: con_DependsOnModel_1
+            capability: feature
         - host:
             node: Conda_0
             relationship: con_HostedOn_4
             capability: host
   relationship_templates:
-    con_HostedOnPipeline_4:
-      type: mltosca.relationships.HostedOnPipeline
-    con_HostedOn_2:
-      type: tosca.relationships.HostedOn
-    con_HostedOn_3:
-      type: tosca.relationships.HostedOn
-    con_HostedOnPipeline_2:
-      type: mltosca.relationships.HostedOnPipeline
-    con_HostedOn_0:
-      type: tosca.relationships.HostedOn
-    con_HostedOnPipeline_3:
-      type: mltosca.relationships.HostedOnPipeline
-    con_HostedOn_1:
-      type: tosca.relationships.HostedOn
-    con_DependsOnModel_0:
-      type: mltosca.relationships.DependsOnModel
-    con_DependsOn_6:
-      type: tosca.relationships.DependsOn
-    con_HostedOnPipeline_0:
-      type: mltosca.relationships.HostedOnPipeline
-    con_HostedOnPipeline_1:
-      type: mltosca.relationships.HostedOnPipeline
-    con_HostedOn_4:
-      type: tosca.relationships.HostedOn
     con_DependsOn_0:
       type: tosca.relationships.DependsOn
     con_DependsOn_1:
@@ -259,3 +275,35 @@ topology_template:
       type: mltosca.relationships.HostedOnEvaluation
     con_HostedOnEvaluation_2:
       type: mltosca.relationships.HostedOnEvaluation
+    con_HostedOnPipeline_4:
+      type: mltosca.relationships.HostedOnPipeline
+    con_HostedOn_2:
+      type: tosca.relationships.HostedOn
+    con_HostedOn_3:
+      type: tosca.relationships.HostedOn
+    con_HostedOnPipeline_2:
+      type: mltosca.relationships.HostedOnPipeline
+    con_HostedOn_0:
+      type: tosca.relationships.HostedOn
+    con_HostedOnPipeline_3:
+      type: mltosca.relationships.HostedOnPipeline
+    con_HostedOn_1:
+      type: tosca.relationships.HostedOn
+    con_DependsOnModel_1:
+      type: mltosca.relationships.DependsOnModel
+    con_DependsOnModel_0:
+      type: mltosca.relationships.DependsOnModel
+    con_DependsOn_6:
+      type: tosca.relationships.DependsOn
+    con_DependsOn_7:
+      type: tosca.relationships.DependsOn
+    con_HostedOn_6:
+      type: tosca.relationships.HostedOn
+    con_HostedOnPipeline_0:
+      type: mltosca.relationships.HostedOnPipeline
+    con_HostedOnPipeline_1:
+      type: mltosca.relationships.HostedOnPipeline
+    con_HostedOn_4:
+      type: tosca.relationships.HostedOn
+    con_HostedOn_5:
+      type: tosca.relationships.HostedOn

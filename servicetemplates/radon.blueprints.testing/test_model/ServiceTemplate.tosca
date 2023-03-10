@@ -4,36 +4,42 @@ metadata:
   targetNamespace: "radon.blueprints.testing"
 topology_template:
   node_templates:
-    KNeighborsClassifier_0:
-      type: mltosca.nodes.Sklearn.KNeighborsClassifier
+    RemoveNanRows_0:
+      type: mltosca.nodes.Preprocessing.RemoveNanRows
       metadata:
-        x: "1012"
-        y: "292"
-        displayName: "KNeighborsClassifier"
-      properties:
-        leaf_size: 30
-        weights: "uniform"
-        n_neighbors: 5
-        algorithm: "auto"
-        target: "Survived"
+        x: "1045"
+        y: "151"
+        displayName: "RemoveNanRows"
       requirements:
         - dependency:
-            node: ReadPickle_0
-            relationship: con_DependsOn_0
+            node: ShuffleRows_0
+            relationship: con_DependsOn_1
             capability: feature
         - host:
-            node: Conda_0
-            relationship: con_HostedOn_0
+            node: Pipeline_0
+            relationship: con_HostedOnPipeline_1
             capability: host
-    ReadPickle_0:
-      type: mltosca.nodes.Reading.ReadPickle
+    RemoteWorkstation_0:
+      type: radon.nodes.VM.RemoteWorkstation
       metadata:
-        x: "371"
-        y: "285"
-        displayName: "ReadPickle"
+        x: "584"
+        y: "782"
+        displayName: "RemoteWorkstation"
       properties:
-        filepath: "/home/artjom/mltosca/050323_14-34-56/preprocessing/df.pkl"
+        ssh_username: "centos"
+        KeyFile: "/home/artjom/.ssh/id_rsa"
+        external_ip: "172.17.90.27"
+    Pipeline_0:
+      type: mltosca.nodes.Preprocessing.Pipeline
+      metadata:
+        x: "848"
+        y: "373"
+        displayName: "Pipeline"
       requirements:
+        - dependency:
+            node: ReadCSV_0
+            relationship: con_DependsOn_0
+            capability: feature
         - host:
             node: Conda_0
             relationship: con_HostedOn_1
@@ -41,13 +47,52 @@ topology_template:
     Conda_0:
       type: mltosca.nodes.Environment.Conda
       metadata:
-        x: "725"
-        y: "732"
+        x: "580"
+        y: "614"
         displayName: "Conda"
+      requirements:
+        - host:
+            node: RemoteWorkstation_0
+            relationship: con_HostedOn_2
+            capability: host
+    ShuffleRows_0:
+      type: mltosca.nodes.Preprocessing.ShuffleRows
+      metadata:
+        x: "635"
+        y: "151"
+        displayName: "ShuffleRows"
+      requirements:
+        - host:
+            node: Pipeline_0
+            relationship: con_HostedOnPipeline_0
+            capability: host
+    ReadCSV_0:
+      type: mltosca.nodes.Reading.ReadCSV
+      metadata:
+        x: "314"
+        y: "379"
+        displayName: "ReadCSV"
+      properties:
+        filepath: "/home/centos/data.csv"
+        delimiter: ","
+        encoding: "UTF-8"
+      requirements:
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_0
+            capability: host
   relationship_templates:
+    con_HostedOn_2:
+      type: tosca.relationships.HostedOn
     con_DependsOn_0:
+      type: tosca.relationships.DependsOn
+    con_DependsOn_1:
       type: tosca.relationships.DependsOn
     con_HostedOn_0:
       type: tosca.relationships.HostedOn
     con_HostedOn_1:
       type: tosca.relationships.HostedOn
+    con_HostedOnPipeline_0:
+      type: mltosca.relationships.HostedOnPipeline
+    con_HostedOnPipeline_1:
+      type: mltosca.relationships.HostedOnPipeline

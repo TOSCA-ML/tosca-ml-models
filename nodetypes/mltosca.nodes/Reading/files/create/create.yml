@@ -1,7 +1,7 @@
 ---
 - name: Activate Conda environment and run Python script
-  hosts: localhost
-  gather_facts: no
+  hosts: all
+  gather_facts: yes
 
   tasks:
     - name: Check if file exists
@@ -19,5 +19,15 @@
         path: "{{ project_location }}/{{output_folder}}"
         state: directory
 
+    - name: Copy files to external VM
+      synchronize:
+        src: ReadFile.py
+        dest: "{{ ansible_env.HOME }}/ReadFile.py"
+
     - name: Activate Conda environment
-      shell: ". ~/anaconda3/bin/activate mltosca && python ReadFile.py {{project_location}}/{{output_folder}} {{filepath}} {{parameters}}"
+      shell: ". ~/anaconda3/bin/activate mltosca && nohup python ReadFile.py {{project_location}}/{{output_folder}} {{filepath}} {{parameters}} &"
+
+    - name: Remove file
+      file:
+        path: "{{ ansible_env.HOME }}/ReadFile.py"
+        state: absent
