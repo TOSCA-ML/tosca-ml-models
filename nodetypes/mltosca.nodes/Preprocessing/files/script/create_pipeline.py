@@ -98,7 +98,7 @@ def read_config_file(config_path) -> str:
 
 def setup_config_file(project_location, dataframe_name='df.pkl'):
   with open(project_location + '/configuration.json', 'w') as file:
-    json.dump({'filenames': [dataframe_name]}, file, indent=4)
+    json.dump({'filenames': [project_location + '/' + dataframe_name]}, file, indent=4)
 
 
 def main():
@@ -118,9 +118,9 @@ def main():
     time.sleep(1)
   dataframe_file = read_config_file(previous_output_folder + '/configuration.json')
 
-  while not os.path.isfile(previous_output_folder + '/' + dataframe_file):
+  while not os.path.isfile(dataframe_file):
     time.sleep(1)
-  df = read_dataframe(previous_output_folder + '/' + dataframe_file)
+  df = read_dataframe(dataframe_file)
 
   pipeline = create_pipeline(output_folder + '/order.txt')
   df = eval(pipeline)

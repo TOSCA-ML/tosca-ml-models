@@ -11,3 +11,6 @@ node_types:
       function_id:
         type: string
         default: "remove_nan_rows"
+      output_folder:
+        type: string
+        default: { get_attribute: [ SELF, host, output_folder ] }

@@ -26,6 +26,10 @@ relationship_types:
                 type: string
                 required: false
                 default: { get_attribute: [ TARGET, data_folder ] }
+              output_folder:
+                type: string
+                required: false
+                default: { get_attribute: [ SOURCE, function_id ] }
             implementation:
               primary: configure.yml
               timeout: 0

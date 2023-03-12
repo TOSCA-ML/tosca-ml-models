@@ -10,7 +10,7 @@ node_types:
     attributes:
       function_id:
         type: string
-        default: "read_csv"
+        default: { get_attribute: [ SELF, tosca_id ] }
       parameters:
         type: string
         default: { concat: [ { get_property: [ SELF, delimiter ] }, "#_#", { get_property: [ SELF, encoding ] } ] }

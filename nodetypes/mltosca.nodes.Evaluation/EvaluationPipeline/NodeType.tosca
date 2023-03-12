@@ -10,7 +10,7 @@ node_types:
     attributes:
       function_id:
         type: string
-        default: "evaluation"
+        default: { get_attribute: [ SELF, tosca_id ] }
     capabilities:
       host:
         occurrences: [ 1, UNBOUNDED ]

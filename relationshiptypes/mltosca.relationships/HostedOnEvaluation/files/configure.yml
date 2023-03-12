@@ -5,22 +5,22 @@
   tasks:
     - name: Create my_folder directory
       file:
-        path: "{{ project_location }}/evaluation"
+        path: "{{ project_location }}/{{ output_folder }}"
         state: directory
 
     - name: Check if file exists
       stat:
-        path: "{{ project_location }}/evaluation/metrics.txt"
+        path: "{{ project_location }}/{{ output_folder }}/metrics.txt"
       register: file_info
 
     - name: get remote file contents
-      command: "cat {{ project_location }}/evaluation/metrics.txt"
+      command: "cat {{ project_location }}/{{ output_folder }}/metrics.txt"
       register: file_content
       when: file_info.stat.exists
 
     - name: Append input to file
       copy:
-        dest: "{{ project_location }}/evaluation/metrics.txt"
+        dest: "{{ project_location }}/{{ output_folder }}/metrics.txt"
         content: |
           {% if file_info.stat.exists %}
           {{ file_content.stdout }}

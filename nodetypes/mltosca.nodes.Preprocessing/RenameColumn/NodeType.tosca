@@ -11,6 +11,9 @@ node_types:
       function_id:
         type: string
         default: "rename_column"
+      output_folder:
+        type: string
+        default: { get_attribute: [ SELF, host, output_folder ] }
       parameters:
         type: string
         default: { concat: [ { get_property: [ SELF, OldName ] }, "-|-", { get_property: [ SELF, NewName ] } ] }

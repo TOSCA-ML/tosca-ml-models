@@ -11,6 +11,9 @@ node_types:
       function_id:
         type: string
         default: "keep_columns"
+      output_folder:
+        type: string
+        default: { get_attribute: [ SELF, host, output_folder ] }
       parameters:
           type: string
           default: { get_property: [ SELF, columns ] }

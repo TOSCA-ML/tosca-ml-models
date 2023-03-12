@@ -19,16 +19,6 @@ topology_template:
             node: Pipeline_0
             relationship: con_HostedOnPipeline_1
             capability: host
-    RemoteWorkstation_0:
-      type: radon.nodes.VM.RemoteWorkstation
-      metadata:
-        x: "584"
-        y: "782"
-        displayName: "RemoteWorkstation"
-      properties:
-        ssh_username: "centos"
-        KeyFile: "/home/artjom/.ssh/id_rsa"
-        external_ip: "172.17.90.27"
     Pipeline_0:
       type: mltosca.nodes.Preprocessing.Pipeline
       metadata:
@@ -50,11 +40,6 @@ topology_template:
         x: "580"
         y: "614"
         displayName: "Conda"
-      requirements:
-        - host:
-            node: RemoteWorkstation_0
-            relationship: con_HostedOn_2
-            capability: host
     ShuffleRows_0:
       type: mltosca.nodes.Preprocessing.ShuffleRows
       metadata:
@@ -73,7 +58,7 @@ topology_template:
         y: "379"
         displayName: "ReadCSV"
       properties:
-        filepath: "/home/centos/data.csv"
+        filepath: "/home/artjom/thesis/TOSCA-ML/project1/data/data.csv"
         delimiter: ","
         encoding: "UTF-8"
       requirements:
@@ -82,8 +67,6 @@ topology_template:
             relationship: con_HostedOn_0
             capability: host
   relationship_templates:
-    con_HostedOn_2:
-      type: tosca.relationships.HostedOn
     con_DependsOn_0:
       type: tosca.relationships.DependsOn
     con_DependsOn_1:

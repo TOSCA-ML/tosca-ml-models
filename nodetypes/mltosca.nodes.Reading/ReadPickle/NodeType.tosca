@@ -10,4 +10,4 @@ node_types:
     attributes:
       function_id:
         type: string
-        default: "read_pickle"
+        default: { get_attribute: [ SELF, tosca_id ] }

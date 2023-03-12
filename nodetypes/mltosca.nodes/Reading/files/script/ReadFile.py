@@ -8,7 +8,7 @@ from pandas import DataFrame
 
 def setup_config_file(project_location, dataframe_name='df.pkl'):
   with open(project_location + '/configuration.json', 'w') as file:
-    json.dump({'filenames': [dataframe_name]}, file, indent=4)
+    json.dump({'filenames': [project_location + '/' + dataframe_name]}, file, indent=4)
 
 
 def read_csv(filepath: str, parameters: str) -> DataFrame:

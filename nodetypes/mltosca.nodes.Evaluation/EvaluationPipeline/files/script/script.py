@@ -26,8 +26,8 @@ def wait_for_data(data_folder: str) -> DataFrame:
   while not os.path.isfile(data_folder + '/configuration.json'):
     time.sleep(1)
   data = read_config_file(data_folder + '/configuration.json')
-  file_name = 'test.pkl' if 'test.pkl' in data else data[0]
-  return pd.read_pickle(data_folder + '/' + file_name)
+  file_name = data[1]
+  return pd.read_pickle(file_name)
 
 
 def read_evaluation_functions(output_folder: str):

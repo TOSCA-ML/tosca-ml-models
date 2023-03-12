@@ -10,7 +10,7 @@ node_types:
     attributes:
       output_folder:
         type: string
-        default: "preprocessing"
+        default: { get_attribute: [ SELF, tosca_id ] }
       parameters:
         type: string
         default: "none"

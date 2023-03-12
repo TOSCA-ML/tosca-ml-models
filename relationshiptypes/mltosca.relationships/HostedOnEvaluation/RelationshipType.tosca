@@ -23,6 +23,10 @@ relationship_types:
                 type: string
                 required: false
                 default: { get_attribute: [ SOURCE, project_location ] }
+              output_folder:
+                type: string
+                required: false
+                default: { get_attribute: [ TARGET, function_id ] }
             implementation:
               primary: configure.yml
               timeout: 0

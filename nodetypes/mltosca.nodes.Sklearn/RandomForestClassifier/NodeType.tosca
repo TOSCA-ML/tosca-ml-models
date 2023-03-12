@@ -10,7 +10,7 @@ node_types:
     attributes:
       function_id:
         type: string
-        default: "random_forest_classifier"
+        default: { get_attribute: [ SELF, tosca_id ] }
     properties:
       criterion:
         type: string
@@ -24,3 +24,40 @@ node_types:
       n_estimators:
         type: integer
         default: 100
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          create:
+            description: The standard create operation
+            inputs:
+              data_folder:
+                type: string
+                required: true
+                default: { get_attribute: [ SELF, data_folder ] }
+              output_folder:
+                type: string
+                required: true
+                default: { get_attribute: [ SELF, function_id ] }
+              project_location:
+                type: string
+                required: false
+                default: { get_attribute: [ SELF, project_location ] }
+              parameters:
+                type: string
+                required: false
+                default: "params"
+              target:
+                type: string
+                required: true
+                default: { get_property: [ SELF, target ] }
+            implementation:
+              primary: create
+              timeout: 0
+    artifacts:
+      create:
+        type: radon.artifacts.Ansible
+        file: create.yml
+      script:
+        type: tosca.artifacts.File
+        file: script.py
