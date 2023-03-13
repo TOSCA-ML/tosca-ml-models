@@ -43,10 +43,22 @@ node_types:
                 type: string
                 required: false
                 default: { get_attribute: [ SELF, project_location ] }
-              parameters:
+              criterion:
                 type: string
-                required: false
-                default: "params"
+                required: true
+                default: { get_property: [ SELF, criterion ] }
+              min_samples_split:
+                type: integer
+                required: true
+                default: { get_property: [ SELF, min_samples_split ] }
+              max_depth:
+                type: integer
+                required: true
+                default: { get_property: [ SELF, max_depth ] }
+              n_estimators:
+                type: integer
+                required: true
+                default: { get_property: [ SELF, n_estimators ] }
               target:
                 type: string
                 required: true

@@ -43,10 +43,22 @@ node_types:
                 type: string
                 required: false
                 default: { get_attribute: [ SELF, project_location ] }
-              parameters:
+              leaf_size:
+                type: integer
+                required: true
+                default: { get_property: [ SELF, leaf_size ] }
+              n_neighbors:
+                type: integer
+                required: true
+                default: { get_property: [ SELF, n_neighbors ] }
+              weights:
                 type: string
-                required: false
-                default: "params"
+                required: true
+                default: { get_property: [ SELF, weights ] }
+              algorithm:
+                type: string
+                required: true
+                default: { get_property: [ SELF, algorithm ] }
               target:
                 type: string
                 required: true

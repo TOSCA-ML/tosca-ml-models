@@ -23,6 +23,11 @@ def read_config_file(config_path) -> str:
   return config['filenames'][0]
 
 
+def setup_config_file(project_location, dataframe_name='model.pkl'):
+  with open(project_location + '/configuration.json', 'w') as file:
+    json.dump({'filenames': [project_location + '/' + dataframe_name]}, file, indent=4)
+
+
 def train_model(model, train_data, target):
   while not os.path.isfile(train_data):
     time.sleep(1)
@@ -33,21 +38,22 @@ def train_model(model, train_data, target):
   return model
 
 
-def create_model(parameters):
-  #   criterion, min_samples_split, max_depth, n_estimators = parameters.split('#_#')
-  #   return RandomForestClassifier(n_estimators=int(n_estimators),
-  #                                 criterion=criterion,
-  #                                 max_depth=int(max_depth),
-  #                                 min_samples_split=int(min_samples_split))
-  return RandomForestClassifier()
+def create_model(criterion, min_samples_split, max_depth, n_estimators):
+    return RandomForestClassifier(n_estimators=int(n_estimators),
+                                  criterion=criterion,
+                                  max_depth=int(max_depth),
+                                  min_samples_split=int(min_samples_split))
+
 
 if __name__ == "__main__":
-  output_folder, data_folder, target, parameters = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+  output_folder, data_folder, target, criterion, min_samples_split, max_depth, n_estimators = \
+    sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]
+  setup_config_file(output_folder)
 
   while not os.path.isfile(data_folder + '/configuration.json'):
     time.sleep(1)
   train_dataframe = read_config_file(data_folder + '/configuration.json')
 
-  model = create_model(parameters)
+  model = create_model(criterion, min_samples_split, max_depth, n_estimators)
   model = train_model(model, train_dataframe, target)
   save_model(model, output_folder + '/model.pkl')

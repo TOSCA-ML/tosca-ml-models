@@ -1,23 +1,19 @@
 tosca_definitions_version: tosca_simple_yaml_1_3
 
 node_types:
-  mltosca.nodes.Reading:
-    derived_from: mltosca.nodes.Data
+  mltosca.nodes.Export:
+    derived_from: mltosca.nodes.MLBlock
     metadata:
       targetNamespace: "mltosca.nodes"
       abstract: "false"
       final: "false"
+    properties:
+      export_folder:
+        type: string
     attributes:
       output_folder:
         type: string
-        default: { get_attribute: [ SELF, function_id ] }
-      parameters:
-        type: string
-        default: "none"
-    properties:
-      filepath:
-        type: string
-        description: The path of the file to read
+        default: { get_attribute: [ SELF, dependency, output_folder ] }
     requirements:
       - host:
           capability: tosca.capabilities.Compute
@@ -31,22 +27,18 @@ node_types:
           create:
             description: The standard create operation
             inputs:
-              filepath:
-                type: string
+              export_folder:
+                type: float
                 required: true
-                default: { get_property: [ SELF, filepath ] }
+                default: { get_property: [ SELF, export_folder ] }
               project_location:
-                type: string
+                type: float
                 required: true
                 default: { get_attribute: [ SELF, project_location ] }
               output_folder:
-                type: string
+                type: float
                 required: true
                 default: { get_attribute: [ SELF, output_folder ] }
-              parameters:
-                type: string
-                required: false
-                default: { get_attribute: [ SELF, parameters ] }
             implementation:
               primary: create
               timeout: 0
@@ -54,6 +46,3 @@ node_types:
       create:
         type: radon.artifacts.Ansible
         file: create.yml
-      script:
-        type: tosca.artifacts.File
-        file: ReadFile.py

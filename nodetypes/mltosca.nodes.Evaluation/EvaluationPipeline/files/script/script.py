@@ -30,6 +30,11 @@ def wait_for_data(data_folder: str) -> DataFrame:
   return pd.read_pickle(file_name)
 
 
+def setup_config_file(project_location, models_fullpath):
+  with open(project_location + '/configuration.json', 'w') as file:
+    json.dump({'filenames': models_fullpath}, file, indent=4)
+
+
 def read_evaluation_functions(output_folder: str):
   while not os.path.isfile(output_folder + '/metrics.txt'):
     time.sleep(1)
@@ -45,6 +50,8 @@ if __name__ == "__main__":
 
   with open(project_location + '/' + output_folder + '/models.txt') as file:
     models = [line.rstrip() for line in file]
+
+  models_fullpath = []
 
   for model_description in models:
     model_name, data_folder = model_description.split("#_#")
@@ -76,6 +83,10 @@ if __name__ == "__main__":
       elif function == 'mae':
         results['mae'] = mean_absolute_error(y_true, y_pred)
 
-    with open(project_location + '/' + output_folder + '/' + model_name + '_evaluation.txt', 'w') as f:
+    fullpath = project_location + '/' + output_folder + '/' + model_name + '.txt'
+    models_fullpath.append(fullpath)
+    with open(fullpath, 'w') as f:
       for key, value in results.items():
         f.write(f"{key}: {value}\n")
+
+  setup_config_file(project_location + '/' + output_folder, models_fullpath)

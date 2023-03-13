@@ -28,8 +28,8 @@ topology_template:
     Precision_0:
       type: mltosca.nodes.Evaluation.Precision
       metadata:
-        x: "1574"
-        y: "900"
+        x: "2119"
+        y: "876"
         displayName: "Precision"
       requirements:
         - host:
@@ -54,8 +54,8 @@ topology_template:
     Recall_0:
       type: mltosca.nodes.Evaluation.Recall
       metadata:
-        x: "2233"
-        y: "914"
+        x: "2241"
+        y: "671"
         displayName: "Recall"
       requirements:
         - host:
@@ -133,8 +133,8 @@ topology_template:
     Accuracy_0:
       type: mltosca.nodes.Evaluation.Accuracy
       metadata:
-        x: "1312"
-        y: "766"
+        x: "1848"
+        y: "892"
         displayName: "Accuracy"
       requirements:
         - host:
@@ -144,8 +144,8 @@ topology_template:
     RemoveNanRows_0:
       type: mltosca.nodes.Preprocessing.RemoveNanRows
       metadata:
-        x: "1962"
-        y: "83"
+        x: "1965"
+        y: "119"
         displayName: "RemoveNanRows"
       requirements:
         - dependency:
@@ -160,7 +160,7 @@ topology_template:
       type: mltosca.nodes.Preprocessing.Pipeline
       metadata:
         x: "884"
-        y: "342"
+        y: "343"
         displayName: "Pipeline"
       requirements:
         - dependency:
@@ -192,7 +192,7 @@ topology_template:
       type: mltosca.nodes.Environment.Conda
       metadata:
         x: "424"
-        y: "562"
+        y: "563"
         displayName: "Conda"
     ReadCSV_0:
       type: mltosca.nodes.Reading.ReadCSV
@@ -212,8 +212,8 @@ topology_template:
     F1_0:
       type: mltosca.nodes.Evaluation.F1
       metadata:
-        x: "1937"
-        y: "969"
+        x: "1492"
+        y: "850"
         displayName: "F1"
       requirements:
         - host:
