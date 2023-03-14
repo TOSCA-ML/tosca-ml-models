@@ -1,25 +1,22 @@
 tosca_definitions_version: tosca_simple_yaml_1_3
 
 node_types:
-  mltosca.nodes.Sklearn.KNeighborsClassifier:
+  mltosca.nodes.Sklearn.LogisticRegression:
     derived_from: mltosca.nodes.Sklearn
     metadata:
       targetNamespace: "mltosca.nodes.Sklearn"
       abstract: "false"
       final: "false"
     properties:
-      leaf_size:
-        type: integer
-        default: 30
-      weights:
+      penalty:
         type: string
-        default: "uniform"
-      n_neighbors:
-        type: integer
-        default: 5
-      algorithm:
-        type: string
-        default: "auto"
+        default: "l2"
+      dual:
+        type: boolean
+        default: false
+      tol:
+        type: float
+        default: 0.0001
     interfaces:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
@@ -27,22 +24,18 @@ node_types:
           start:
             description: The standard start operation
             inputs:
-              leaf_size:
-                type: integer
-                required: true
-                default: { get_property: [ SELF, leaf_size ] }
-              n_neighbors:
-                type: integer
-                required: true
-                default: { get_property: [ SELF, n_neighbors ] }
-              weights:
+              penalty:
                 type: string
                 required: true
-                default: { get_property: [ SELF, weights ] }
-              algorithm:
-                type: string
+                default: { get_property: [ SELF, penalty ] }
+              dual:
+                type: boolean
                 required: true
-                default: { get_property: [ SELF, algorithm ] }
+                default: { get_property: [ SELF, dual ] }
+              tol:
+                type: float
+                required: true
+                default: { get_property: [ SELF, tol ] }
             implementation:
               primary: start
               timeout: 0

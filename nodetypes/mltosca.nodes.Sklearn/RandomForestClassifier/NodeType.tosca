@@ -7,10 +7,6 @@ node_types:
       targetNamespace: "mltosca.nodes.Sklearn"
       abstract: "false"
       final: "false"
-    attributes:
-      function_id:
-        type: string
-        default: { get_attribute: [ SELF, tosca_id ] }
     properties:
       criterion:
         type: string
@@ -28,21 +24,9 @@ node_types:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
         operations:
-          create:
-            description: The standard create operation
+          start:
+            description: The standard start operation
             inputs:
-              data_folder:
-                type: string
-                required: true
-                default: { get_attribute: [ SELF, data_folder ] }
-              output_folder:
-                type: string
-                required: true
-                default: { get_attribute: [ SELF, function_id ] }
-              project_location:
-                type: string
-                required: false
-                default: { get_attribute: [ SELF, project_location ] }
               criterion:
                 type: string
                 required: true
@@ -59,17 +43,13 @@ node_types:
                 type: integer
                 required: true
                 default: { get_property: [ SELF, n_estimators ] }
-              target:
-                type: string
-                required: true
-                default: { get_property: [ SELF, target ] }
             implementation:
-              primary: create
+              primary: start
               timeout: 0
     artifacts:
-      create:
+      start:
         type: radon.artifacts.Ansible
-        file: create.yml
+        file: start.yml
       script:
         type: tosca.artifacts.File
         file: script.py
