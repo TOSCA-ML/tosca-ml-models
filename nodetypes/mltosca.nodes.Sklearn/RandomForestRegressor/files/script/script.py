@@ -38,22 +38,19 @@ def train_model(model, train_data, target):
   return model
 
 
-def create_model(n_estimators, criterion, min_samples_split, min_samples_leaf):
-  return RandomForestRegressor(n_estimators=int(n_estimators),
-                               criterion=criterion,
-                               min_samples_split=int(min_samples_split),
-                               min_samples_leaf=int(min_samples_leaf))
+def create_model(n_estimators, min_samples_split, min_samples_leaf):
+  return RandomForestRegressor(n_estimators=int(n_estimators), min_samples_split=int(min_samples_split), min_samples_leaf=int(min_samples_leaf))
 
 
 if __name__ == "__main__":
-  output_folder, data_folder, target, n_estimators, criterion, min_samples_split, min_samples_leaf = \
-    sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]
+  output_folder, data_folder, target, n_estimators, min_samples_split, min_samples_leaf = \
+    sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]
   setup_config_file(output_folder)
 
   while not os.path.isfile(data_folder + '/configuration.json'):
     time.sleep(1)
   train_dataframe = read_config_file(data_folder + '/configuration.json')
 
-  model = create_model(n_estimators, criterion, min_samples_split, min_samples_leaf)
+  model = create_model(n_estimators, min_samples_split, min_samples_leaf)
   model = train_model(model, train_dataframe, target)
   save_model(model, output_folder + '/model.pkl')

@@ -1,22 +1,16 @@
 tosca_definitions_version: tosca_simple_yaml_1_3
 
 node_types:
-  mltosca.nodes.Sklearn.LinearRegression:
+  mltosca.nodes.Sklearn.DecisionTreeRegressor:
     derived_from: mltosca.nodes.Sklearn
     metadata:
       targetNamespace: "mltosca.nodes.Sklearn"
       abstract: "false"
       final: "false"
     properties:
-      fit_intercept:
-        type: boolean
-        default: true
-      copy_X:
-        type: boolean
-        default: true
-      positive:
-        type: boolean
-        default: false
+      max_depth:
+        type: integer
+        default: 3
     interfaces:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
@@ -24,18 +18,10 @@ node_types:
           start:
             description: The standard start operation
             inputs:
-              fit_intercept:
-                type: boolean
+              max_depth:
+                type: integer
                 required: true
-                default: { get_property: [ SELF, fit_intercept ] }
-              copy_X:
-                type: boolean
-                required: true
-                default: { get_property: [ SELF, copy_X ] }
-              positive:
-                type: boolean
-                required: true
-                default: { get_property: [ SELF, positive ] }
+                default: { get_property: [ SELF, max_depth ] }
             implementation:
               primary: start
               timeout: 0

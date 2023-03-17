@@ -16,7 +16,7 @@
 
     - name: Activate Conda environment
       shell: ". ~/anaconda3/bin/activate mltosca && nohup python script.py {{project_location}}/{{output_folder}} {{project_location}}/{{data_folder}}
-      {{target}} {{penalty}} {{dual}} {{tol}} &"
+      {{target}} {{criterion}} {{splitter}} {{max_depth}} &"
 
     - name: Remove file
       file:

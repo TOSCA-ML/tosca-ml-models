@@ -5,7 +5,7 @@ import json
 import pickle
 import pandas as pd
 from pandas import DataFrame
-from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeRegressor
 
 
 def save_model(model, file_path):
@@ -15,10 +15,6 @@ def save_model(model, file_path):
 
 def read_dataframe(path: str) -> DataFrame:
   return pd.read_pickle(path)
-
-
-def transform_boolean(variable: str):
-  return variable.lower() == "true"
 
 
 def setup_config_file(project_location, dataframe_name='model.pkl'):
@@ -42,21 +38,18 @@ def train_model(model, train_data, target):
   return model
 
 
-def create_model(penalty, dual, tol):
-  return LogisticRegression(penalty=penalty,
-                            dual=transform_boolean(dual),
-                            tol=float(tol))
+def create_model(max_depth):
+  return DecisionTreeRegressor(max_depth=int(max_depth))
 
 
 if __name__ == "__main__":
-  output_folder, data_folder, target, penalty, dual, tol = \
-    sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]
+  output_folder, data_folder, target, max_depth = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
   setup_config_file(output_folder)
 
   while not os.path.isfile(data_folder + '/configuration.json'):
     time.sleep(1)
   train_dataframe = read_config_file(data_folder + '/configuration.json')
 
-  model = create_model(penalty, dual, tol)
+  model = create_model(max_depth)
   model = train_model(model, train_dataframe, target)
   save_model(model, output_folder + '/model.pkl')

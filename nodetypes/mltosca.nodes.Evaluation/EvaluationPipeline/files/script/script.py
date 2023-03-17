@@ -54,20 +54,21 @@ if __name__ == "__main__":
   models_fullpath = []
 
   for model_description in models:
-    model_name, data_folder = model_description.split("#_#")
+    model_name, data_folder, target = model_description.split("#_#")
 
     model = wait_for_model(project_location + '/' + model_name)
     test_data = wait_for_data(project_location + '/' + data_folder)
     functions = read_evaluation_functions(project_location + '/' + output_folder)
 
-    X = test_data.drop('Survived', axis=1)
-    y_true = test_data['Survived']
+    X = test_data.drop(target, axis=1)
+    y_true = test_data[target]
     y_pred = model.predict(X)
     results = dict()
 
     for function in functions:
       if function == 'accuracy':
         results['accuracy'] = accuracy_score(y_true, y_pred)
+
       elif function == 'precision':
         results['precision'] = precision_score(y_true, y_pred, average='weighted')
       elif function == 'f1':

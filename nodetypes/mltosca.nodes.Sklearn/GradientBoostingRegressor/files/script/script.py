@@ -38,22 +38,21 @@ def train_model(model, train_data, target):
   return model
 
 
-def create_model(subsample, loss, n_estimators, learning_rate):
+def create_model(subsample, n_estimators, learning_rate):
   return GradientBoostingRegressor(subsample=float(subsample),
-                                   loss=loss,
                                    n_estimators=int(n_estimators),
                                    learning_rate=float(learning_rate))
 
 
 if __name__ == "__main__":
-  output_folder, data_folder, target, subsample, loss, n_estimators, learning_rate = \
-    sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7]
+  output_folder, data_folder, target, subsample, n_estimators, learning_rate = \
+    sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6]
   setup_config_file(output_folder)
 
   while not os.path.isfile(data_folder + '/configuration.json'):
     time.sleep(1)
   train_dataframe = read_config_file(data_folder + '/configuration.json')
 
-  model = create_model(subsample, loss, n_estimators, learning_rate)
+  model = create_model(subsample, n_estimators, learning_rate)
   model = train_model(model, train_dataframe, target)
   save_model(model, output_folder + '/model.pkl')

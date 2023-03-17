@@ -1,0 +1,281 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+metadata:
+  targetNamespace: "radon.blueprints.testing"
+topology_template:
+  node_templates:
+    GradientBoostingRegressor_0:
+      type: mltosca.nodes.Sklearn.GradientBoostingRegressor
+      metadata:
+        x: "1519"
+        y: "158"
+        displayName: "GradientBoostingRegressor"
+      properties:
+        loss: "squared_error"
+        subsample: 1
+        n_estimators: 100
+        learning_rate: 0.1
+        target: "charges"
+      requirements:
+        - dependency:
+            node: SplitTrainTest_0
+            relationship: con_DependsOn_5
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_3
+            capability: host
+    ReplaceCategoricalValues_1:
+      type: mltosca.nodes.Preprocessing.ReplaceCategoricalValues
+      metadata:
+        x: "730"
+        y: "148"
+        displayName: "ReplaceCategoricalValues"
+      properties:
+        column: "smoker"
+      requirements:
+        - dependency:
+            node: ReplaceCategoricalValues_0
+            relationship: con_DependsOn_1
+            capability: feature
+        - host:
+            node: Pipeline_0
+            relationship: con_HostedOnPipeline_1
+            capability: host
+    ReplaceCategoricalValues_2:
+      type: mltosca.nodes.Preprocessing.ReplaceCategoricalValues
+      metadata:
+        x: "1001"
+        y: "228"
+        displayName: "ReplaceCategoricalValues"
+      properties:
+        column: "region"
+      requirements:
+        - dependency:
+            node: ReplaceCategoricalValues_1
+            relationship: con_DependsOn_2
+            capability: feature
+        - host:
+            node: Pipeline_0
+            relationship: con_HostedOnPipeline_0
+            capability: host
+    ReplaceCategoricalValues_0:
+      type: mltosca.nodes.Preprocessing.ReplaceCategoricalValues
+      metadata:
+        x: "389"
+        y: "203"
+        displayName: "ReplaceCategoricalValues"
+      properties:
+        column: "sex"
+      requirements:
+        - host:
+            node: Pipeline_0
+            relationship: con_HostedOnPipeline_2
+            capability: host
+    MeanAbsoluteError_0:
+      type: mltosca.nodes.Evaluation.MeanAbsoluteError
+      metadata:
+        x: "2332"
+        y: "328"
+        displayName: "MeanAbsoluteError"
+      requirements:
+        - host:
+            node: EvaluationPipeline_0
+            relationship: con_HostedOnEvaluation_1
+            capability: host
+    MeanSquaredError_0:
+      type: mltosca.nodes.Evaluation.MeanSquaredError
+      metadata:
+        x: "2334"
+        y: "157"
+        displayName: "MeanSquaredError"
+      requirements:
+        - host:
+            node: EvaluationPipeline_0
+            relationship: con_HostedOnEvaluation_0
+            capability: host
+    RootMeanSquaredError_0:
+      type: mltosca.nodes.Evaluation.RootMeanSquaredError
+      metadata:
+        x: "2326"
+        y: "625"
+        displayName: "RootMeanSquaredError"
+      requirements:
+        - host:
+            node: EvaluationPipeline_0
+            relationship: con_HostedOnEvaluation_3
+            capability: host
+    R2_0:
+      type: mltosca.nodes.Evaluation.R2
+      metadata:
+        x: "2330"
+        y: "470"
+        displayName: "R2"
+      requirements:
+        - host:
+            node: EvaluationPipeline_0
+            relationship: con_HostedOnEvaluation_2
+            capability: host
+    Pipeline_0:
+      type: mltosca.nodes.Preprocessing.Pipeline
+      metadata:
+        x: "763"
+        y: "551"
+        displayName: "Pipeline"
+      requirements:
+        - dependency:
+            node: ReadCSV_0
+            relationship: con_DependsOn_0
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_1
+            capability: host
+    SplitTrainTest_0:
+      type: mltosca.nodes.Splitting.SplitTrainTest
+      metadata:
+        x: "1239"
+        y: "428"
+        displayName: "SplitTrainTest"
+      properties:
+        test_size: 0.2
+      requirements:
+        - dependency:
+            node: Pipeline_0
+            relationship: con_DependsOn_3
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_2
+            capability: host
+    Conda_0:
+      type: mltosca.nodes.Environment.Conda
+      metadata:
+        x: "814"
+        y: "787"
+        displayName: "Conda"
+    DecisionTreeRegressor_0:
+      type: mltosca.nodes.Sklearn.DecisionTreeRegressor
+      metadata:
+        x: "1595"
+        y: "568"
+        displayName: "DecisionTreeRegressor"
+      properties:
+        max_depth: 3
+        target: "charges"
+      requirements:
+        - dependency:
+            node: SplitTrainTest_0
+            relationship: con_DependsOn_6
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_5
+            capability: host
+    ReadCSV_0:
+      type: mltosca.nodes.Reading.ReadCSV
+      metadata:
+        x: "305"
+        y: "570"
+        displayName: "ReadCSV"
+      properties:
+        filepath: "/home/artjom/thesis/TOSCA-ML/project3/data/insurance.csv"
+        delimiter: ","
+        encoding: "UTF-8"
+      requirements:
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_0
+            capability: host
+    EvaluationPipeline_0:
+      type: mltosca.nodes.Evaluation.EvaluationPipeline
+      metadata:
+        x: "1926"
+        y: "401"
+        displayName: "EvaluationPipeline"
+      requirements:
+        - dependency:
+            node: GradientBoostingRegressor_0
+            relationship: con_DependsOnModel_0
+            capability: feature
+        - dependency:
+            node: RandomForestRegressor_0
+            relationship: con_DependsOnModel_1
+            capability: feature
+        - dependency:
+            node: DecisionTreeRegressor_0
+            relationship: con_DependsOnModel_2
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_6
+            capability: host
+    RandomForestRegressor_0:
+      type: mltosca.nodes.Sklearn.RandomForestRegressor
+      metadata:
+        x: "1592"
+        y: "383"
+        displayName: "RandomForestRegressor"
+      properties:
+        min_samples_split: 2
+        n_estimators: 100
+        min_samples_leaf: 1
+        target: "charges"
+      requirements:
+        - dependency:
+            node: SplitTrainTest_0
+            relationship: con_DependsOn_4
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_4
+            capability: host
+  relationship_templates:
+    con_HostedOn_2:
+      type: tosca.relationships.HostedOn
+    con_HostedOn_3:
+      type: tosca.relationships.HostedOn
+    con_HostedOnPipeline_2:
+      type: mltosca.relationships.HostedOnPipeline
+    con_HostedOn_0:
+      type: tosca.relationships.HostedOn
+    con_HostedOn_1:
+      type: tosca.relationships.HostedOn
+    con_DependsOnModel_2:
+      type: mltosca.relationships.DependsOnModel
+    con_DependsOnModel_1:
+      type: mltosca.relationships.DependsOnModel
+    con_DependsOnModel_0:
+      type: mltosca.relationships.DependsOnModel
+    con_DependsOn_6:
+      type: tosca.relationships.DependsOn
+    con_HostedOn_6:
+      type: tosca.relationships.HostedOn
+    con_HostedOnPipeline_0:
+      type: mltosca.relationships.HostedOnPipeline
+    con_HostedOnPipeline_1:
+      type: mltosca.relationships.HostedOnPipeline
+    con_HostedOn_4:
+      type: tosca.relationships.HostedOn
+    con_HostedOn_5:
+      type: tosca.relationships.HostedOn
+    con_DependsOn_0:
+      type: tosca.relationships.DependsOn
+    con_DependsOn_1:
+      type: tosca.relationships.DependsOn
+    con_DependsOn_4:
+      type: tosca.relationships.DependsOn
+    con_DependsOn_5:
+      type: tosca.relationships.DependsOn
+    con_DependsOn_2:
+      type: tosca.relationships.DependsOn
+    con_DependsOn_3:
+      type: tosca.relationships.DependsOn
+    con_HostedOnEvaluation_1:
+      type: mltosca.relationships.HostedOnEvaluation
+    con_HostedOnEvaluation_0:
+      type: mltosca.relationships.HostedOnEvaluation
+    con_HostedOnEvaluation_3:
+      type: mltosca.relationships.HostedOnEvaluation
+    con_HostedOnEvaluation_2:
+      type: mltosca.relationships.HostedOnEvaluation

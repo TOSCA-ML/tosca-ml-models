@@ -11,9 +11,6 @@ node_types:
       n_estimators:
         type: integer
         default: 100
-      criterion:
-        type: string
-        default: "squared_error"
       min_samples_split:
         type: integer
         default: 2
@@ -31,10 +28,6 @@ node_types:
                 type: integer
                 required: true
                 default: { get_property: [ SELF, n_estimators ] }
-              criterion:
-                type: string
-                required: true
-                default: { get_property: [ SELF, criterion ] }
               min_samples_split:
                 type: integer
                 required: true

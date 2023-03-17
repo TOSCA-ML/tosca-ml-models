@@ -30,6 +30,10 @@ relationship_types:
                 type: string
                 required: false
                 default: { get_attribute: [ SOURCE, function_id ] }
+              target:
+                type: string
+                required: false
+                default: { get_attribute: [ TARGET, target ] }
             implementation:
               primary: configure.yml
               timeout: 0
