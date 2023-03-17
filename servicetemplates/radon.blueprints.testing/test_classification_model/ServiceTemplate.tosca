@@ -195,6 +195,26 @@ topology_template:
             node: Conda_0
             relationship: con_HostedOn_6
             capability: host
+    XGBClassifier_0:
+      type: mltosca.nodes.XGBoost.XGBClassifier
+      metadata:
+        x: "2278"
+        y: "230"
+        displayName: "XGBClassifier"
+      properties:
+        max_depth: 6
+        n_estimators: 100
+        learning_rate: 0.3
+        target: "Survived"
+      requirements:
+        - dependency:
+            node: SplitTrainTest_0
+            relationship: con_DependsOn_8
+            capability: feature
+        - host:
+            node: Conda_0
+            relationship: con_HostedOn_8
+            capability: host
     SplitTrainTest_0:
       type: mltosca.nodes.Splitting.SplitTrainTest
       metadata:
@@ -288,6 +308,10 @@ topology_template:
             node: RandomForestClassifier_0
             relationship: con_DependsOnModel_2
             capability: feature
+        - dependency:
+            node: XGBClassifier_0
+            relationship: con_DependsOnModel_3
+            capability: feature
         - host:
             node: Conda_0
             relationship: con_HostedOn_2
@@ -335,12 +359,16 @@ topology_template:
       type: tosca.relationships.HostedOn
     con_HostedOnPipeline_6:
       type: mltosca.relationships.HostedOnPipeline
+    con_DependsOn_8:
+      type: tosca.relationships.DependsOn
     con_DependsOnModel_2:
       type: mltosca.relationships.DependsOnModel
     con_DependsOnModel_1:
       type: mltosca.relationships.DependsOnModel
     con_DependsOn_9:
       type: tosca.relationships.DependsOn
+    con_HostedOn_8:
+      type: tosca.relationships.HostedOn
     con_DependsOn_6:
       type: tosca.relationships.DependsOn
     con_DependsOnModel_0:
@@ -355,5 +383,7 @@ topology_template:
       type: mltosca.relationships.HostedOnPipeline
     con_HostedOn_4:
       type: tosca.relationships.HostedOn
+    con_DependsOnModel_3:
+      type: mltosca.relationships.DependsOnModel
     con_HostedOn_5:
       type: tosca.relationships.HostedOn

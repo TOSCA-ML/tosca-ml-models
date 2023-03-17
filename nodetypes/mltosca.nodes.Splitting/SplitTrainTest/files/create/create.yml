@@ -15,7 +15,7 @@
         dest: "{{ ansible_env.HOME }}/split.py"
 
     - name: Activate Conda environment
-      shell: ". ~/anaconda3/bin/activate mltosca && nohup python split.py {{project_location}}/{{output_folder}} {{project_location}}/{{previous_output_folder}} {{test_size}} &"
+      shell: ". ~/anaconda3/bin/activate mltosca && nohup ~/anaconda3/envs/mltosca/bin/python split.py {{project_location}}/{{output_folder}} {{project_location}}/{{previous_output_folder}} {{test_size}} &"
 
     - name: Remove file
       file:

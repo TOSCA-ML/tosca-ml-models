@@ -15,7 +15,7 @@
         dest: "{{ ansible_env.HOME }}/script.py"
 
     - name: Activate Conda environment
-      shell: ". ~/anaconda3/bin/activate mltosca && nohup python script.py {{project_location}}/{{output_folder}} {{project_location}}/{{data_folder}}
+      shell: ". ~/anaconda3/bin/activate mltosca && nohup ~/anaconda3/envs/mltosca/bin/python script.py {{project_location}}/{{output_folder}} {{project_location}}/{{data_folder}}
       {{target}} {{leaf_size}} {{n_neighbors}} {{weights}} {{algorithm}} &"
 
     - name: Remove file

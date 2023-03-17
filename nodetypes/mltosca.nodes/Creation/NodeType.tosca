@@ -7,3 +7,30 @@ node_types:
       targetNamespace: "mltosca.nodes"
       abstract: "false"
       final: "false"
+    properties:
+      target:
+        type: string
+    attributes:
+      function_id:
+        type: string
+        default: { get_attribute: [ SELF, tosca_id ] }
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        inputs:
+          output_folder:
+            type: string
+            required: true
+            default: { get_attribute: [ SELF, function_id ] }
+          data_folder:
+            type: string
+            required: true
+            default: { get_attribute: [ SELF, data_folder ] }
+          project_location:
+            type: string
+            required: false
+            default: { get_attribute: [ SELF, project_location ] }
+          target:
+            type: string
+            required: true
+            default: { get_property: [ SELF, target ] }

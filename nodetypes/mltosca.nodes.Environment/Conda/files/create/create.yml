@@ -7,6 +7,7 @@
     packages:
       - scikit-learn
       - pandas
+      - xgboost
 
   tasks:
     - name: Collect current  timestamp
@@ -35,5 +36,4 @@
     - name: Install Packages
       command: conda install --yes {{ item }} --name {{ conda_env_name }}
       with_items: "{{ packages }}"
-
       when: env_exists.rc != 0
