@@ -68,7 +68,6 @@ if __name__ == "__main__":
     for function in functions:
       if function == 'accuracy':
         results['accuracy'] = accuracy_score(y_true, y_pred)
-
       elif function == 'precision':
         results['precision'] = precision_score(y_true, y_pred, average='weighted')
       elif function == 'f1':
