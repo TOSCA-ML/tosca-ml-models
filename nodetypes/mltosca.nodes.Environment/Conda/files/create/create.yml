@@ -4,10 +4,6 @@
   gather_facts: no
   vars:
     conda_env_name: "mltosca"
-    packages:
-      - scikit-learn
-      - pandas
-      - xgboost
 
   tasks:
     - name: Collect current  timestamp
@@ -33,7 +29,35 @@
       command: conda create --yes --name {{ conda_env_name }} python=3
       when: env_exists.rc != 0
 
-    - name: Install Packages
-      command: conda install --yes {{ item }} --name {{ conda_env_name }}
-      with_items: "{{ packages }}"
-      when: env_exists.rc != 0
+    - name: Check for Pandas in Anaconda virtual environment
+      command: ~/anaconda3/envs/mltosca/bin/python -c "import xgboost"
+      register: xgboost_check
+      ignore_errors: true
+
+    - name: Install Pandas in Anaconda virtual environment
+      pip:
+        name: pandas
+        executable: ~/anaconda3/envs/mltosca/bin/pip
+      when: xgboost_check.rc != 0
+
+    - name: Check for Sklearn in Anaconda virtual environment
+      command: ~/anaconda3/envs/mltosca/bin/python -c "import sklearn"
+      register: sklearn_check
+      ignore_errors: true
+
+    - name: Install Sklearn in Anaconda virtual environment
+      pip:
+        name: scikit-learn
+        executable: ~/anaconda3/envs/mltosca/bin/pip
+      when: sklearn_check.rc != 0
+
+    - name: Check for XGBoost in Anaconda virtual environment
+      command: ~/anaconda3/envs/mltosca/bin/python -c "import xgboost"
+      register: xgboost_check
+      ignore_errors: true
+
+    - name: Install XGBoost in Anaconda virtual environment
+      pip:
+        name: xgboost
+        executable: ~/anaconda3/envs/mltosca/bin/pip
+      when: xgboost_check.rc != 0

@@ -19,7 +19,7 @@ node_types:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
         operations:
-          create:
+          start:
             description: The standard create operation
             inputs:
               test_size:
@@ -39,12 +39,12 @@ node_types:
                 required: true
                 default: { get_attribute: [ SELF, project_location ] }
             implementation:
-              primary: create
+              primary: start
               timeout: 0
     artifacts:
-      create:
+      start:
         type: radon.artifacts.Ansible
-        file: create.yml
+        file: start.yml
       script:
         type: tosca.artifacts.File
         file: split.py

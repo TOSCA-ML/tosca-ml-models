@@ -28,7 +28,7 @@ node_types:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
         operations:
-          create:
+          start:
             description: The standard create operation
             inputs:
               filepath:
@@ -48,12 +48,12 @@ node_types:
                 required: false
                 default: { get_attribute: [ SELF, parameters ] }
             implementation:
-              primary: create
+              primary: start
               timeout: 0
     artifacts:
-      create:
+      start:
         type: radon.artifacts.Ansible
-        file: create.yml
+        file: start.yml
       script:
         type: tosca.artifacts.File
         file: ReadFile.py

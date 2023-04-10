@@ -7,8 +7,8 @@ topology_template:
     DecisionTreeClassifier_0:
       type: mltosca.nodes.Sklearn.DecisionTreeClassifier
       metadata:
-        x: "1811"
-        y: "120"
+        x: "1553"
+        y: "608"
         displayName: "DecisionTreeClassifier"
       properties:
         criterion: "gini"
@@ -18,17 +18,17 @@ topology_template:
       requirements:
         - dependency:
             node: SplitTrainTest_0
-            relationship: con_DependsOn_1
+            relationship: con_DependsOn_8
             capability: feature
         - host:
             node: Conda_0
-            relationship: con_HostedOn_3
+            relationship: con_HostedOn_4
             capability: host
     RandomForestClassifier_0:
       type: mltosca.nodes.Sklearn.RandomForestClassifier
       metadata:
-        x: "2311"
-        y: "126"
+        x: "1553"
+        y: "499"
         displayName: "RandomForestClassifier"
       properties:
         criterion: "gini"
@@ -39,98 +39,88 @@ topology_template:
       requirements:
         - dependency:
             node: SplitTrainTest_0
-            relationship: con_DependsOn_3
+            relationship: con_DependsOn_10
             capability: feature
         - host:
             node: Conda_0
             relationship: con_HostedOn_5
             capability: host
-    RemoteWorkstation_0:
-      type: radon.nodes.VM.RemoteWorkstation
-      metadata:
-        x: "544"
-        y: "852"
-        displayName: "RemoteWorkstation"
-      properties:
-        ssh_username: "centos"
-        KeyFile: "/home/artjom/.ssh/id_rsa"
-        external_ip: "172.17.90.27"
     Precision_0:
       type: mltosca.nodes.Evaluation.Precision
       metadata:
-        x: "2277"
-        y: "497"
+        x: "1029"
+        y: "837"
         displayName: "Precision"
       requirements:
         - host:
             node: EvaluationPipeline_0
-            relationship: con_HostedOnEvaluation_2
+            relationship: con_HostedOnEvaluation_3
             capability: host
     ShuffleRows_0:
       type: mltosca.nodes.Preprocessing.ShuffleRows
       metadata:
-        x: "1468"
-        y: "153"
+        x: "1316"
+        y: "131"
         displayName: "ShuffleRows"
       requirements:
         - dependency:
             node: ReplaceCategoricalValues_0
-            relationship: con_DependsOn_11
+            relationship: con_DependsOn_4
             capability: feature
         - dependency:
-            node: ReplaceCategoricalValues_2
-            relationship: con_DependsOn_12
+            node: ReplaceCategoricalValues_1
+            relationship: con_DependsOn_5
             capability: feature
         - host:
             node: Pipeline_0
-            relationship: con_HostedOnPipeline_6
+            relationship: con_HostedOnPipeline_5
             capability: host
     Recall_0:
       type: mltosca.nodes.Evaluation.Recall
       metadata:
-        x: "2301"
-        y: "644"
+        x: "369"
+        y: "679"
         displayName: "Recall"
       requirements:
         - host:
             node: EvaluationPipeline_0
-            relationship: con_HostedOnEvaluation_1
+            relationship: con_HostedOnEvaluation_0
             capability: host
-    RemoveColumns_0:
-      type: mltosca.nodes.Preprocessing.RemoveColumns
-      metadata:
-        x: "241"
-        y: "172"
-        displayName: "RemoveColumns"
-      properties:
-        columns: "PassengerId,Name,Cabin,Ticket"
-      requirements:
-        - host:
-            node: Pipeline_0
-            relationship: con_HostedOnPipeline_3
-            capability: host
-    ReplaceCategoricalValues_2:
+    ReplaceCategoricalValues_1:
       type: mltosca.nodes.Preprocessing.ReplaceCategoricalValues
       metadata:
-        x: "1135"
-        y: "269"
+        x: "954"
+        y: "183"
         displayName: "ReplaceCategoricalValues"
       properties:
         column: "Embarked"
       requirements:
         - dependency:
             node: RemoveNanRows_0
-            relationship: con_DependsOn_10
+            relationship: con_DependsOn_2
             capability: feature
         - host:
             node: Pipeline_0
-            relationship: con_HostedOnPipeline_5
+            relationship: con_HostedOnPipeline_3
+            capability: host
+    RemoveColumns_0:
+      type: mltosca.nodes.Preprocessing.RemoveColumns
+      metadata:
+        x: "29"
+        y: "133"
+        displayName: "RemoveColumns"
+      properties:
+        columns: "PassengerId,Name,Cabin,Ticket"
+      requirements:
+        - host:
+            node: Pipeline_0
+            relationship: con_HostedOnPipeline_0
             capability: host
     KNeighborsClassifier_0:
       type: mltosca.nodes.Sklearn.KNeighborsClassifier
       metadata:
-        x: "2061"
-        y: "123"
+        x: "1538"
+        y: "797"
         displayName: "KNeighborsClassifier"
       properties:
         leaf_size: 30
@@ -141,24 +131,24 @@ topology_template:
       requirements:
         - dependency:
             node: SplitTrainTest_0
-            relationship: con_DependsOn_2
+            relationship: con_DependsOn_9
             capability: feature
         - host:
             node: Conda_0
-            relationship: con_HostedOn_4
+            relationship: con_HostedOn_3
             capability: host
     ReplaceCategoricalValues_0:
       type: mltosca.nodes.Preprocessing.ReplaceCategoricalValues
       metadata:
-        x: "1121"
-        y: "83"
+        x: "939"
+        y: "68"
         displayName: "ReplaceCategoricalValues"
       properties:
         column: "Sex"
       requirements:
         - dependency:
             node: RemoveNanRows_0
-            relationship: con_DependsOn_9
+            relationship: con_DependsOn_3
             capability: feature
         - host:
             node: Pipeline_0
@@ -167,49 +157,49 @@ topology_template:
     Accuracy_0:
       type: mltosca.nodes.Evaluation.Accuracy
       metadata:
-        x: "2315"
-        y: "771"
+        x: "461"
+        y: "811"
         displayName: "Accuracy"
       requirements:
         - host:
             node: EvaluationPipeline_0
-            relationship: con_HostedOnEvaluation_0
+            relationship: con_HostedOnEvaluation_1
             capability: host
     RemoveNanRows_0:
       type: mltosca.nodes.Preprocessing.RemoveNanRows
       metadata:
-        x: "844"
-        y: "185"
+        x: "665"
+        y: "132"
         displayName: "RemoveNanRows"
       requirements:
         - dependency:
             node: ReplaceNanValues_0
-            relationship: con_DependsOn_7
+            relationship: con_DependsOn_1
             capability: feature
         - host:
             node: Pipeline_0
-            relationship: con_HostedOnPipeline_1
+            relationship: con_HostedOnPipeline_2
             capability: host
     Pipeline_0:
       type: mltosca.nodes.Preprocessing.Pipeline
       metadata:
-        x: "1029"
-        y: "479"
+        x: "654"
+        y: "373"
         displayName: "Pipeline"
       requirements:
         - dependency:
             node: ReadCSV_0
-            relationship: con_DependsOn_0
+            relationship: con_DependsOn_6
             capability: feature
         - host:
             node: Conda_0
-            relationship: con_HostedOn_6
+            relationship: con_HostedOn_1
             capability: host
     XGBClassifier_0:
       type: mltosca.nodes.XGBoost.XGBClassifier
       metadata:
-        x: "2278"
-        y: "230"
+        x: "1544"
+        y: "704"
         displayName: "XGBClassifier"
       properties:
         max_depth: 6
@@ -219,45 +209,40 @@ topology_template:
       requirements:
         - dependency:
             node: SplitTrainTest_0
-            relationship: con_DependsOn_8
+            relationship: con_DependsOn_11
             capability: feature
         - host:
             node: Conda_0
-            relationship: con_HostedOn_8
+            relationship: con_HostedOn_6
             capability: host
     SplitTrainTest_0:
       type: mltosca.nodes.Splitting.SplitTrainTest
       metadata:
-        x: "1916"
-        y: "415"
+        x: "1203"
+        y: "392"
         displayName: "SplitTrainTest"
       properties:
         test_size: 0.2
       requirements:
         - dependency:
             node: Pipeline_0
-            relationship: con_DependsOn_4
+            relationship: con_DependsOn_7
             capability: feature
         - host:
             node: Conda_0
-            relationship: con_HostedOn_1
+            relationship: con_HostedOn_2
             capability: host
     Conda_0:
       type: mltosca.nodes.Environment.Conda
       metadata:
-        x: "1001"
-        y: "755"
+        x: "779"
+        y: "517"
         displayName: "Conda"
-      requirements:
-        - host:
-            node: RemoteWorkstation_0
-            relationship: con_HostedOn_9
-            capability: host
     ReplaceNanValues_0:
       type: mltosca.nodes.Preprocessing.ReplaceNanValues
       metadata:
-        x: "555"
-        y: "163"
+        x: "357"
+        y: "130"
         displayName: "ReplaceNanValues"
       properties:
         method: "mean"
@@ -266,37 +251,20 @@ topology_template:
       requirements:
         - dependency:
             node: RemoveColumns_0
-            relationship: con_DependsOn_5
+            relationship: con_DependsOn_0
             capability: feature
         - host:
             node: Pipeline_0
-            relationship: con_HostedOnPipeline_2
-            capability: host
-    ExportEvaluation_0:
-      type: mltosca.nodes.Export.ExportEvaluation
-      metadata:
-        x: "1761"
-        y: "787"
-        displayName: "ExportEvaluation"
-      properties:
-        export_folder: "/home/centos/results"
-      requirements:
-        - dependency:
-            node: EvaluationPipeline_0
-            relationship: con_DependsOn_6
-            capability: feature
-        - host:
-            node: Conda_0
-            relationship: con_HostedOn_7
+            relationship: con_HostedOnPipeline_1
             capability: host
     ReadCSV_0:
       type: mltosca.nodes.Reading.ReadCSV
       metadata:
-        x: "169"
-        y: "605"
+        x: "112"
+        y: "396"
         displayName: "ReadCSV"
       properties:
-        filepath: "/home/centos/data.csv"
+        filepath: "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv"
         delimiter: ","
         encoding: "UTF-8"
       requirements:
@@ -304,37 +272,46 @@ topology_template:
             node: Conda_0
             relationship: con_HostedOn_0
             capability: host
+    F1_0:
+      type: mltosca.nodes.Evaluation.F1
+      metadata:
+        x: "760"
+        y: "832"
+        displayName: "F1"
+      requirements:
+        - host:
+            node: EvaluationPipeline_0
+            relationship: con_HostedOnEvaluation_2
+            capability: host
     EvaluationPipeline_0:
       type: mltosca.nodes.Evaluation.EvaluationPipeline
       metadata:
-        x: "1952"
-        y: "642"
+        x: "754"
+        y: "664"
         displayName: "EvaluationPipeline"
       requirements:
         - dependency:
-            node: DecisionTreeClassifier_0
+            node: RandomForestClassifier_0
             relationship: con_DependsOnModel_0
             capability: feature
         - dependency:
-            node: KNeighborsClassifier_0
+            node: DecisionTreeClassifier_0
             relationship: con_DependsOnModel_1
             capability: feature
         - dependency:
-            node: RandomForestClassifier_0
+            node: XGBClassifier_0
             relationship: con_DependsOnModel_2
             capability: feature
         - dependency:
-            node: XGBClassifier_0
+            node: KNeighborsClassifier_0
             relationship: con_DependsOnModel_3
             capability: feature
         - host:
             node: Conda_0
-            relationship: con_HostedOn_2
+            relationship: con_HostedOn_7
             capability: host
   relationship_templates:
     con_DependsOn_11:
-      type: tosca.relationships.DependsOn
-    con_DependsOn_12:
       type: tosca.relationships.DependsOn
     con_DependsOn_10:
       type: tosca.relationships.DependsOn
@@ -354,12 +331,14 @@ topology_template:
       type: mltosca.relationships.HostedOnEvaluation
     con_HostedOnEvaluation_0:
       type: mltosca.relationships.HostedOnEvaluation
+    con_HostedOnEvaluation_3:
+      type: mltosca.relationships.HostedOnEvaluation
     con_HostedOnEvaluation_2:
       type: mltosca.relationships.HostedOnEvaluation
-    con_HostedOnPipeline_4:
-      type: mltosca.relationships.HostedOnPipeline
     con_HostedOn_2:
       type: tosca.relationships.HostedOn
+    con_HostedOnPipeline_4:
+      type: mltosca.relationships.HostedOnPipeline
     con_HostedOn_3:
       type: tosca.relationships.HostedOn
     con_HostedOnPipeline_5:
@@ -368,32 +347,28 @@ topology_template:
       type: mltosca.relationships.HostedOnPipeline
     con_HostedOn_0:
       type: tosca.relationships.HostedOn
-    con_HostedOnPipeline_3:
-      type: mltosca.relationships.HostedOnPipeline
     con_HostedOn_1:
       type: tosca.relationships.HostedOn
-    con_HostedOnPipeline_6:
+    con_HostedOnPipeline_3:
       type: mltosca.relationships.HostedOnPipeline
-    con_DependsOn_8:
-      type: tosca.relationships.DependsOn
     con_DependsOnModel_2:
       type: mltosca.relationships.DependsOnModel
+    con_DependsOn_8:
+      type: tosca.relationships.DependsOn
     con_DependsOnModel_1:
       type: mltosca.relationships.DependsOnModel
     con_DependsOn_9:
       type: tosca.relationships.DependsOn
-    con_HostedOn_8:
-      type: tosca.relationships.HostedOn
-    con_DependsOn_6:
-      type: tosca.relationships.DependsOn
     con_DependsOnModel_0:
       type: mltosca.relationships.DependsOnModel
-    con_HostedOn_9:
-      type: tosca.relationships.HostedOn
+    con_DependsOn_6:
+      type: tosca.relationships.DependsOn
     con_DependsOn_7:
       type: tosca.relationships.DependsOn
     con_HostedOn_6:
       type: tosca.relationships.HostedOn
+    con_HostedOnPipeline_0:
+      type: mltosca.relationships.HostedOnPipeline
     con_HostedOn_7:
       type: tosca.relationships.HostedOn
     con_HostedOnPipeline_1:

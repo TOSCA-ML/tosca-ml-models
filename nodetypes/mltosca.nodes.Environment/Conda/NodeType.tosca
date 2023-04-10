@@ -10,6 +10,11 @@ node_types:
     attributes:
       project_location:
         type: string
+    requirements:
+      - host:
+          capability: tosca.capabilities.Compute
+          relationship: tosca.relationships.HostedOn
+          occurrences: [ 0, 1 ]
     capabilities:
       host:
         occurrences: [ 1, UNBOUNDED ]

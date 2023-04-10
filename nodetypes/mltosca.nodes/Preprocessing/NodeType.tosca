@@ -27,7 +27,7 @@ node_types:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
         operations:
-          configure:
+          start:
             description: The standard create operation
             inputs:
               function_id:
@@ -51,12 +51,12 @@ node_types:
                 required: true
                 default: { get_attribute: [ SELF, previous_output_folder ] }
             implementation:
-              primary: configure
+              primary: start
               timeout: 0
     artifacts:
-      configure:
+      start:
         type: radon.artifacts.Ansible
-        file: configure.yml
+        file: start.yml
       script:
         type: tosca.artifacts.File
         file: create_pipeline.py

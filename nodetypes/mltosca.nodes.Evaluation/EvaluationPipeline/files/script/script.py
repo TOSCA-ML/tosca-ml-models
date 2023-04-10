@@ -69,11 +69,11 @@ if __name__ == "__main__":
       if function == 'accuracy':
         results['accuracy'] = accuracy_score(y_true, y_pred)
       elif function == 'precision':
-        results['precision'] = precision_score(y_true, y_pred, average='weighted')
+        results['precision'] = precision_score(y_true, y_pred)
       elif function == 'f1':
-        results['f1'] = f1_score(y_true, y_pred, average='weighted')
+        results['f1'] = f1_score(y_true, y_pred)
       elif function == 'recall':
-        results['recall'] = recall_score(y_true, y_pred, average='weighted')
+        results['recall'] = recall_score(y_true, y_pred)
       elif function == 'r2':
         results['r2'] = r2_score(y_true, y_pred)
       elif function == 'mse':

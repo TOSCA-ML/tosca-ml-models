@@ -4,6 +4,16 @@ metadata:
   targetNamespace: "radon.blueprints.testing"
 topology_template:
   node_templates:
+    RemoteWorkstation_0:
+      type: radon.nodes.VM.RemoteWorkstation
+      metadata:
+        x: "362"
+        y: "779"
+        displayName: "RemoteWorkstation"
+      properties:
+        ssh_username: "centos"
+        KeyFile: "/home/artjom/.ssh/id_rsa"
+        external_ip: "172.17.90.27"
     GradientBoostingRegressor_0:
       type: mltosca.nodes.Sklearn.GradientBoostingRegressor
       metadata:
@@ -32,9 +42,9 @@ topology_template:
         y: "714"
         displayName: "XGBRegressor"
       properties:
-        max_depth: "6"
-        n_estimators: "100"
-        learning_rate: "0.3"
+        max_depth: 6
+        n_estimators: 100
+        learning_rate: 0.3
         target: "charges"
       requirements:
         - dependency:
@@ -171,9 +181,14 @@ topology_template:
     Conda_0:
       type: mltosca.nodes.Environment.Conda
       metadata:
-        x: "814"
+        x: "815"
         y: "787"
         displayName: "Conda"
+      requirements:
+        - host:
+            node: RemoteWorkstation_0
+            relationship: con_HostedOn_8
+            capability: host
     DecisionTreeRegressor_0:
       type: mltosca.nodes.Sklearn.DecisionTreeRegressor
       metadata:
@@ -199,7 +214,7 @@ topology_template:
         y: "570"
         displayName: "ReadCSV"
       properties:
-        filepath: "/home/artjom/thesis/TOSCA-ML/project3/data/insurance.csv"
+        filepath: "/home/centos/insurance.csv"
         delimiter: ","
         encoding: "UTF-8"
       requirements:
@@ -289,6 +304,8 @@ topology_template:
       type: mltosca.relationships.DependsOnModel
     con_DependsOnModel_1:
       type: mltosca.relationships.DependsOnModel
+    con_HostedOn_8:
+      type: tosca.relationships.HostedOn
     con_DependsOnModel_0:
       type: mltosca.relationships.DependsOnModel
     con_DependsOn_6:
