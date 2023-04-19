@@ -2,6 +2,10 @@
 
 MLTOSCA is an automated machine learning implementation using TOSCA specification. It allows you to read data, preprocess it, train different ML models, and evaluate them. The implementation is built using a reusable components approach, which are connected with the help of various relationships. The project is developed on top of the [RADON](https://github.com/radon-h2020/radon-particles) project.
 
+### Why use MLTOSCA?
+
+You can imagine a situation when you want to have a small experiment or research without coding experience. Or, for example, you know exactly how to code, but you do not want to start from scratch and do it as fast as possible. Or the worst scenario, in which the working computer does not have the necessary capacity to execute the whole project script. Given project solves those problems. Having at least some understanding of data science and the needed steps for an excellent machine-learning model is enough. You must assemble logical components, and the orchestrator will do everything for you.
+
 ### Getting started
 
 First, you must install xOpera orchestrator, which will execute TOSCA scripts.
