@@ -1,0 +1,48 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.XGBoost.XGBRegressor:
+    derived_from: mltosca.nodes.XGBoost
+    metadata:
+      targetNamespace: "mltosca.nodes.XGBoost"
+      abstract: "false"
+      final: "false"
+    properties:
+      n_estimators:
+        type: integer
+        default: 100
+      max_depth:
+        type: integer
+        default: 6
+      learning_rate:
+        type: float
+        default: 0.3
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          start:
+            description: The standard start operation
+            inputs:
+              n_estimators:
+                type: integer
+                required: true
+                default: { get_property: [ SELF, n_estimators ] }
+              max_depth:
+                type: integer
+                required: true
+                default: { get_property: [ SELF, max_depth ] }
+              learning_rate:
+                type: float
+                required: true
+                default: { get_property: [ SELF, learning_rate ] }
+            implementation:
+              primary: start
+              timeout: 0
+    artifacts:
+      start:
+        type: radon.artifacts.Ansible
+        file: start.yml
+      script:
+        type: tosca.artifacts.File
+        file: script.py

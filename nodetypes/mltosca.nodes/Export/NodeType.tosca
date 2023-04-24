@@ -1,0 +1,48 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.Export:
+    derived_from: mltosca.nodes.MLBlock
+    metadata:
+      targetNamespace: "mltosca.nodes"
+      abstract: "false"
+      final: "false"
+    properties:
+      export_folder:
+        type: string
+    attributes:
+      output_folder:
+        type: string
+        default: { get_attribute: [ SELF, dependency, output_folder ] }
+    requirements:
+      - host:
+          capability: tosca.capabilities.Compute
+          node: mltosca.nodes.Environment
+          relationship: tosca.relationships.HostedOn
+          occurrences: [ 1, 1 ]
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          start:
+            description: The standard create operation
+            inputs:
+              export_folder:
+                type: float
+                required: true
+                default: { get_property: [ SELF, export_folder ] }
+              project_location:
+                type: float
+                required: true
+                default: { get_attribute: [ SELF, project_location ] }
+              output_folder:
+                type: float
+                required: true
+                default: { get_attribute: [ SELF, output_folder ] }
+            implementation:
+              primary: start
+              timeout: 0
+    artifacts:
+      start:
+        type: radon.artifacts.Ansible
+        file: start.yml

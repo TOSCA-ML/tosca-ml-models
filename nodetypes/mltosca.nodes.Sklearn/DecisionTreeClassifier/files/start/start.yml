@@ -1,0 +1,24 @@
+---
+- name: Activate Conda environment and run Python script
+  hosts: all
+  gather_facts: yes
+
+  tasks:
+    - name: Create folder
+      file:
+        path: "{{ project_location }}/{{output_folder}}"
+        state: directory
+
+    - name: Copy files to external VM
+      synchronize:
+        src: script.py
+        dest: "{{ ansible_env.HOME }}/script.py"
+
+    - name: Activate Conda environment
+      shell: "nohup ~/anaconda3/envs/mltosca/bin/python script.py {{project_location}}/{{output_folder}} {{project_location}}/{{data_folder}}
+      {{target}} {{criterion}} {{splitter}} {{max_depth}} &"
+
+    - name: Remove file
+      file:
+        path: "{{ ansible_env.HOME }}/script.py"
+        state: absent

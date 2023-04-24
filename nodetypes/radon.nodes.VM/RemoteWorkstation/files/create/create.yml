@@ -1,0 +1,28 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: Set attributes
+      set_stats:
+        data:
+          private_address: "{{ external_ip }}"
+          public_address: "{{ external_ip }}"
+          public_ip:      "{{ external_ip }}"
+          id: "{{ external_ip }}"
+    - name: Create temporary invetory for ssh wait
+      add_host:
+        name: server
+        groups: vms
+        ansible_host: "{{ external_ip }}"
+        ansible_user: "{{ ssh_username }}"
+        ansible_ssh_private_key_file: "{{ KeyFile }}"
+        ansible_ssh_common_args: >
+          -o BatchMode=yes
+          -o UserKnownHostsFile=/dev/null
+          -o StrictHostKeyChecking=no
+- hosts: vms
+  gather_facts: false
+  tasks:
+    - name: Wait for ssh to wake up
+      wait_for_connection:
+        timeout: 60

@@ -1,0 +1,23 @@
+---
+- name: Activate Conda environment and run Python script
+  hosts: all
+  gather_facts: yes
+
+  tasks:
+    - name: Create folder
+      file:
+        path: "{{ project_location }}/{{output_folder}}"
+        state: directory
+
+    - name: Copy files to external VM
+      synchronize:
+        src: split.py
+        dest: "{{ ansible_env.HOME }}/split.py"
+
+    - name: Activate Conda environment
+      shell: "nohup ~/anaconda3/envs/mltosca/bin/python split.py {{project_location}}/{{output_folder}} {{project_location}}/{{previous_output_folder}} {{test_size}} &"
+
+    - name: Remove file
+      file:
+        path: "{{ ansible_env.HOME }}/split.py"
+        state: absent

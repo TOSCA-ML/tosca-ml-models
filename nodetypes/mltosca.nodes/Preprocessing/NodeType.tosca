@@ -1,0 +1,62 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.Preprocessing:
+    derived_from: mltosca.nodes.Data
+    metadata:
+      targetNamespace: "mltosca.nodes"
+      abstract: "false"
+      final: "false"
+    attributes:
+      output_folder:
+        type: string
+        default: { get_attribute: [ SELF, tosca_id ] }
+      parameters:
+        type: string
+        default: "none"
+      previous_output_folder:
+        type: string
+        default: "none"
+    requirements:
+      - host:
+          capability: mltosca.capabilities.Pipeline
+          node: mltosca.nodes.Preprocessing
+          relationship: mltosca.relationships.HostedOnPipeline
+          occurrences: [ 1, 1 ]
+    interfaces:
+      Standard:
+        type: tosca.interfaces.node.lifecycle.Standard
+        operations:
+          start:
+            description: The standard create operation
+            inputs:
+              function_id:
+                type: string
+                required: false
+                default: { get_attribute: [ SELF, function_id ] }
+              parameters:
+                type: string
+                required: false
+                default: { get_attribute: [ SELF, parameters ] }
+              project_location:
+                type: string
+                required: false
+                default: { get_attribute: [ SELF, project_location ] }
+              output_folder:
+                type: string
+                required: true
+                default: { get_attribute: [ SELF, output_folder ] }
+              previous_output_folder:
+                type: string
+                required: true
+                default: { get_attribute: [ SELF, previous_output_folder ] }
+            implementation:
+              primary: start
+              timeout: 0
+    artifacts:
+      start:
+        type: radon.artifacts.Ansible
+        file: start.yml
+      script:
+        type: tosca.artifacts.File
+        file: create_pipeline.py

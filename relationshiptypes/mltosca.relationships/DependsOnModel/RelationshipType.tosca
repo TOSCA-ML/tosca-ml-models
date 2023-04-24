@@ -1,0 +1,39 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+relationship_types:
+  mltosca.relationships.DependsOnModel:
+    derived_from: tosca.relationships.DependsOn
+    metadata:
+      targetNamespace: "mltosca.relationships"
+      abstract: "false"
+      final: "false"
+    interfaces:
+      Configure:
+        type: tosca.interfaces.relationship.Configure
+        operations:
+          pre_configure_target:
+            description: The standard pre_configure_target operation
+            inputs:
+              function_id:
+                type: string
+                required: false
+                default: { get_attribute: [ TARGET, function_id ] }
+              project_location:
+                type: string
+                required: false
+                default: { get_attribute: [ SOURCE, project_location ] }
+              data_folder:
+                type: string
+                required: false
+                default: { get_attribute: [ TARGET, data_folder ] }
+              output_folder:
+                type: string
+                required: false
+                default: { get_attribute: [ SOURCE, function_id ] }
+              target:
+                type: string
+                required: false
+                default: { get_attribute: [ TARGET, target ] }
+            implementation:
+              primary: configure.yml
+              timeout: 0

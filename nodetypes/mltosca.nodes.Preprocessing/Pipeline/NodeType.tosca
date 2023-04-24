@@ -1,0 +1,25 @@
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+node_types:
+  mltosca.nodes.Preprocessing.Pipeline:
+    derived_from: mltosca.nodes.Preprocessing
+    metadata:
+      targetNamespace: "mltosca.nodes.Preprocessing"
+      abstract: "false"
+      final: "false"
+    attributes:
+      function_id:
+        type: string
+        default: "pipeline"
+      previous_output_folder:
+        type: string
+        default: { get_attribute: [ SELF, dependency, output_folder ] }
+    capabilities:
+      host:
+        occurrences: [ 1, UNBOUNDED ]
+        type: mltosca.capabilities.Pipeline
+    requirements:
+      - host:
+          capability: tosca.capabilities.Compute
+          relationship: tosca.relationships.HostedOn
+          occurrences: [ 1, 1 ]

@@ -1,0 +1,63 @@
+---
+- name: Create Conda Environment and Install Packages
+  hosts: all
+  gather_facts: no
+  vars:
+    conda_env_name: "mltosca"
+
+  tasks:
+    - name: Collect current  timestamp
+      shell: date +%d%m%y_%H-%M-%S
+      register: timestamp
+
+    - name: Create directories
+      file:
+        path: ~/mltosca/{{ timestamp.stdout }}
+        state: directory
+
+    - name: Set project location
+      set_stats:
+        data:
+          project_location: "~/mltosca/{{ timestamp.stdout }}"
+
+    - name: Check if Conda environment exists
+      shell: "conda env list | grep mltosca"
+      register: env_exists
+      ignore_errors: true
+
+    - name: Create Conda Environment
+      command: conda create --yes --name {{ conda_env_name }} python=3
+      when: env_exists.rc != 0
+
+    - name: Check for Pandas in Anaconda virtual environment
+      command: ~/anaconda3/envs/mltosca/bin/python -c "import xgboost"
+      register: xgboost_check
+      ignore_errors: true
+
+    - name: Install Pandas in Anaconda virtual environment
+      pip:
+        name: pandas
+        executable: ~/anaconda3/envs/mltosca/bin/pip
+      when: xgboost_check.rc != 0
+
+    - name: Check for Sklearn in Anaconda virtual environment
+      command: ~/anaconda3/envs/mltosca/bin/python -c "import sklearn"
+      register: sklearn_check
+      ignore_errors: true
+
+    - name: Install Sklearn in Anaconda virtual environment
+      pip:
+        name: scikit-learn
+        executable: ~/anaconda3/envs/mltosca/bin/pip
+      when: sklearn_check.rc != 0
+
+    - name: Check for XGBoost in Anaconda virtual environment
+      command: ~/anaconda3/envs/mltosca/bin/python -c "import xgboost"
+      register: xgboost_check
+      ignore_errors: true
+
+    - name: Install XGBoost in Anaconda virtual environment
+      pip:
+        name: xgboost
+        executable: ~/anaconda3/envs/mltosca/bin/pip
+      when: xgboost_check.rc != 0
