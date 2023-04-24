@@ -1,6 +1,6 @@
 # MLTOSCA
 
-MLTOSCA is an automated machine learning implementation using TOSCA specification. It allows you to read data, preprocess it, train different ML models, and evaluate them. The implementation is built using a reusable components approach, which are connected with the help of various relationships. The project is developed on top of the [RADON](https://github.com/radon-h2020/radon-particles) project.
+MLTOSCA is an automated machine learning implementation using TOSCA specification. It allows you to read data, preprocess it, train different ML models, and evaluate them. The implementation is built using a reusable components approach, which are connected with the help of various relationships. The MLTOSCA may not reuse all the models developed under the [Radon-Particle](https://github.com/radon-h2020/radon-particles) project. The RADON Organisation can be found here: [https://github.com/radon-h2020](https://github.com/radon-h2020).
 
 ### Why use MLTOSCA?
 
