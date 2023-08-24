@@ -1,8 +1,8 @@
-# MLTOSCA
+# TOSCA-ML
 
-MLTOSCA is an automated machine learning implementation using TOSCA specification. It allows you to read data, preprocess it, train different ML models, and evaluate them. The implementation is built using a reusable components approach, which are connected with the help of various relationships. The MLTOSCA may not reuse all the models developed under the [Radon-Particle](https://github.com/radon-h2020/radon-particles) project. The RADON Organisation can be found here: [https://github.com/radon-h2020](https://github.com/radon-h2020).
+TOSCA-ML is an automated machine learning implementation using TOSCA specification. It allows you to read data, preprocess it, train different ML models, and evaluate them. The implementation is built using a reusable components approach, which are connected with the help of various relationships. TOSCA-ML may not reuse all the models developed under the [Radon-Particle](https://github.com/radon-h2020/radon-particles) project. The RADON Organisation can be found here: [https://github.com/radon-h2020](https://github.com/radon-h2020).
 
-### Why use MLTOSCA?
+### Why use TOSCA-ML?
 
 You can imagine a situation when you want to have a small experiment or research without coding experience. Or, for example, you know exactly how to code, but you do not want to start from scratch and do it as fast as possible. Or the worst scenario, in which the working computer does not have the necessary capacity to execute the whole project script. Given project solves those problems. Having at least some understanding of data science and the needed steps for an excellent machine-learning model is enough. You must assemble logical components, and the orchestrator will do everything for you.
 
